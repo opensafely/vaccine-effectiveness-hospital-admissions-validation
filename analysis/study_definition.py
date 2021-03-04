@@ -1,11 +1,21 @@
 from cohortextractor import StudyDefinition, patients, codelist, codelist_from_csv
 
+# Import Codelists
+from codelists import *
 
 start_date="2020-09-01"
 end_date="2021-01-01"
 
+ae_discharge_dict = {"discharged_to_ward": 306706006, "discharged_to_icy": 1066391000000105}
+# ae_discharge_list = [key for (key, value) in ae_discharge_dict.items()]
+
+
+
+
+
+
 study = StudyDefinition(
-    index_date=start_date
+    index_date=start_date,
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "today"},
         "rate": "uniform",
@@ -57,10 +67,10 @@ study = StudyDefinition(
         returning="binary_flag",
         find_first_match_in_period=True,
         return_expectations={
-            "incidence": 0.05
+            "incidence": 0.4
         }
         
-    )
+    ),
 
     # date of ae attendance
     attended_ae_date = patients.attended_emergency_care(
@@ -68,7 +78,7 @@ study = StudyDefinition(
         returning="date_arrived",
         find_first_match_in_period=True,
         date_format="YYYY-MM-DD",
-    )
+    ),
 
     # covid status of those admitted to ae
     attended_ae_covid_status = patients.attended_emergency_care(
@@ -76,39 +86,59 @@ study = StudyDefinition(
         returning="binary_flag",
         find_first_match_in_period=True,
         with_these_diagnoses=covid_codes,
-    )
+        return_expectations= {
+            "incidence": 0.9
+        }
+    ),
 
     # in those attending ae had they had recent positiv cov test
     positive_covid_test_before_admission = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["attended_ae_date - 2 weeks", "attended_ae_date"],
+        between=["attended_ae_date - 14 days", "attended_ae_date"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
             "rate": "exponential_increase",
-            "incidence": 0.1,
+            
         },
     ),
 
     # in those attending ae had they had positive cov in pc
     covid_primary_care_before_admission = patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
-        between=["attended_ae_date - 2 weeks", "attended_ae_date"],
+        between=["attended_ae_date - 14 days", "attended_ae_date"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
             "rate": "exponential_increase",
-            "incidence": 0.1,
+       
         },
     ),
     
-    # does ae attendance lead to hosp admission
-    ae_preceding_hospital_admission = patients.admitted_to_hospital(
-        between["attended_ae_date", "attended_ae_date + 2 days"],
-        returning="binary_flag",
-        return_expectations={"incidence": 0.9}
-    )
+    
+
+    discharge_destination = patients.attended_emergency_care(
+        on_or_after="attended_ae_date",
+        returning="discharge_destination",
+        find_first_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations = {
+            "incidence": 0.5,
+            "category": {"ratios": {306706006: 0.5, 1066391000000105: 0.5}},}
+    ),
+
+
+    covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
 
 
 )
