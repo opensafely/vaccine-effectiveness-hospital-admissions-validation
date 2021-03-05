@@ -31,6 +31,8 @@ study = StudyDefinition(
         (sex = "M" OR sex = "F")
         AND
         NOT has_died
+        AND
+        (covid_hospital_admission OR other_hospital_admission OR ae_attendance)
         """,
         registered=patients.registered_as_of(
             "index_date",
@@ -45,8 +47,7 @@ study = StudyDefinition(
             "index_date",
             return_expectations={
                 "rate": "universal",
-                "int": {"distribution": "population_ages"},
-                "incidence" : 0.001
+                "int": {"distribution": "population_ages"}
             },
         ),
         
@@ -62,10 +63,10 @@ study = StudyDefinition(
 
 
     #did they attend ae ever
-    attended_ae = patients.attended_emergency_care(
+    ae_attendance = patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="binary_flag",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         return_expectations={
             "incidence": 0.4
         }
@@ -73,18 +74,18 @@ study = StudyDefinition(
     ),
 
     # date of ae attendance
-    attended_ae_date = patients.attended_emergency_care(
+    ae_attendance_date = patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="date_arrived",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
     ),
 
     # covid status of those admitted to ae
-    attended_ae_covid_status = patients.attended_emergency_care(
+    ae_attendance_covid_status = patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="binary_flag",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         with_these_diagnoses=covid_codes,
         return_expectations= {
             "incidence": 0.9
@@ -95,7 +96,7 @@ study = StudyDefinition(
     positive_covid_test_before_admission = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["attended_ae_date - 14 days", "attended_ae_date"],
+        between=["ae_attendance_date - 14 days", "ae_attendance_date"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -107,7 +108,7 @@ study = StudyDefinition(
     # in those attending ae had they had positive cov in pc
     covid_primary_care_before_admission = patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
-        between=["attended_ae_date - 14 days", "attended_ae_date"],
+        between=["ae_attendance_date - 14 days", "ae_attendance_date"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -119,9 +120,9 @@ study = StudyDefinition(
     
 
     discharge_destination = patients.attended_emergency_care(
-        on_or_after="attended_ae_date",
+        on_or_after="ae_attendance_date",
         returning="discharge_destination",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
         return_expectations = {
             "incidence": 0.5,
