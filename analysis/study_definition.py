@@ -6,7 +6,7 @@ from codelists import *
 start_date="2020-09-01"
 end_date="2021-01-01"
 
-ae_discharge_dict = {"discharged_to_ward": 306706006, "discharged_to_icy": 1066391000000105}
+ae_discharge_dict = {"discharged_to_ward": 306706006, "discharged_to_icu": 1066391000000105}
 # ae_discharge_list = [key for (key, value) in ae_discharge_dict.items()]
 
 
