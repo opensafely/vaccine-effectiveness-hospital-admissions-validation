@@ -6,7 +6,7 @@ from codelists import *
 start_date="2020-09-01"
 end_date="2021-01-01"
 
-ae_discharge_dict = {"discharged_to_ward": 306706006, "discharged_to_icu": 1066391000000105}
+ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_icu": str(1066391000000105)}
 ae_discharge_list = [value for (key, value) in ae_discharge_dict.items()]
 
 
@@ -79,6 +79,7 @@ study = StudyDefinition(
     ae_attendance_date = patients.attended_emergency_care(
         returning="date_arrived",
         find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
         discharged_to=ae_discharge_list,
         return_expectations = {
             "incidence": 0.5,
