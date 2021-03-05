@@ -17,7 +17,7 @@ ae_discharge_dict = {"discharged_to_ward": 306706006, "discharged_to_icu": 10663
 study = StudyDefinition(
     index_date=start_date,
     default_expectations={
-        "date": {"earliest": "1900-01-01", "latest": "today"},
+        "date": {"earliest": start_date, "latest": end_date},
         "rate": "uniform",
         "incidence": 0.5,
     },
@@ -81,7 +81,7 @@ study = StudyDefinition(
         date_format="YYYY-MM-DD",
     ),
 
-    # covid status of those admitted to ae
+    # covid status of those attendance to ae
     ae_attendance_covid_status = patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="binary_flag",
@@ -92,11 +92,22 @@ study = StudyDefinition(
         }
     ),
 
+    # date of ae attendance due to covid
+    ae_attendance_covid_status = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        find_last_match_in_period=True,
+        with_these_diagnoses=covid_codes,
+        return_expectations= {
+            "incidence": 0.9
+        }
+    ),
+
     # in those attending ae had they had recent positiv cov test
-    positive_covid_test_before_admission = patients.with_test_result_in_sgss(
+    positive_covid_test_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["ae_attendance_date - 14 days", "ae_attendance_date"],
+        between=["ae_attendance_date - 14 days", "ae_attendance_date + 7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
