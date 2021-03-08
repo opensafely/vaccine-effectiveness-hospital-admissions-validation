@@ -14,7 +14,7 @@ covid_codes = codelist_from_csv(
 )
 
 covid_codes_ae = codelist_from_csv(
-    "covid_codes.csv",
+    "analysis/covid_codes.csv",
     system="snomed",
     column="snomed_id",
 )
