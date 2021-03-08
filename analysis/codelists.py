@@ -13,6 +13,11 @@ covid_codes = codelist_from_csv(
     column="icd10_code",
 )
 
+covid_codes_ae = codelist_from_csv(
+    "codelists/covid_codes.csv",
+    system="snomed",
+    column="snomed_id",
+)
 
 
 covid_primary_care_positive_test = codelist_from_csv(

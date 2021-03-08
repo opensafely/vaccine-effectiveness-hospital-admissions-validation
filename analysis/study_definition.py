@@ -91,7 +91,7 @@ study = StudyDefinition(
         between=["index_date", end_date],
         returning="binary_flag",
         find_last_match_in_period=True,
-        with_these_diagnoses=covid_codes,
+        with_these_diagnoses=covid_codes_ae,
         return_expectations= {
             "incidence": 0.9
         }
@@ -104,7 +104,7 @@ study = StudyDefinition(
         between=["index_date", end_date],
         returning="date_arrived",
         find_last_match_in_period=True,
-        with_these_diagnoses=covid_codes,
+        with_these_diagnoses=covid_codes_ae,
         return_expectations= {
             "incidence": 0.9
         }
