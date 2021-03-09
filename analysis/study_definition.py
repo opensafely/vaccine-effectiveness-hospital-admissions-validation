@@ -6,7 +6,10 @@ from codelists import *
 start_date="2020-09-01"
 end_date="2021-01-01"
 
-ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_icu": str(1066391000000105)}
+# ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_icu": str(1066391000000105)}
+
+ae_discharge_dict = {"discharged_to_ward": str(306706006)}
+
 ae_discharge_list = [value for (key, value) in ae_discharge_dict.items()]
 
 
@@ -32,7 +35,7 @@ study = StudyDefinition(
         AND
         NOT has_died
         AND
-        (covid_hospital_admission OR ae_attendance)
+        (hospital_admission OR ae_attendance)
         """,
         registered=patients.registered_as_of(
             "index_date",
@@ -103,6 +106,7 @@ study = StudyDefinition(
     ae_attendance_covid_status_date = patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="date_arrived",
+        date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
         return_expectations= {
@@ -155,7 +159,7 @@ study = StudyDefinition(
         with_these_primary_diagnoses=covid_codes,
         on_or_after="index_date",
         date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         return_expectations={
             "incidence": 0.3,
         },
@@ -166,7 +170,17 @@ study = StudyDefinition(
         with_these_diagnoses=covid_codes,
         on_or_after="index_date",
         date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
+    hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
         return_expectations={
             "incidence": 0.3,
         },
