@@ -35,7 +35,7 @@ study = StudyDefinition(
         AND
         NOT has_died
         AND
-        (hospital_admission OR ae_attendance)
+        (hospital_admission OR ae_attendance_any)
         """,
         registered=patients.registered_as_of(
             "index_date",
@@ -62,6 +62,16 @@ study = StudyDefinition(
             }
         ),
 
+    ),
+
+    ae_attendance_any = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.4
+        }
+        
     ),
 
 
