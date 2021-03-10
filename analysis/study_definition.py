@@ -33,7 +33,7 @@ study = StudyDefinition(
         AND
         (sex = "M" OR sex = "F")
         AND
-        NOT has_died
+        (NOT has_died)
         AND
         (hospital_admission OR ae_attendance_any)
         """,
@@ -53,15 +53,14 @@ study = StudyDefinition(
                 "int": {"distribution": "population_ages"}
             },
         ),
-        
-        # https://github.com/opensafely/risk-factors-research/issues/46
+
         sex=patients.sex(
             return_expectations={
                 "rate": "universal",
                 "category": {"ratios": {"M": 0.49, "F": 0.51}},
             }
         ),
-
+       
     ),
 
     ae_attendance_any = patients.attended_emergency_care(
@@ -193,6 +192,31 @@ study = StudyDefinition(
         find_last_match_in_period=True,
         return_expectations={
             "incidence": 0.3,
+        },
+    ),
+
+    # looks at more historical positive cov test
+    positive_covid_test_before_hospital_admission = patients.with_test_result_in_sgss(
+        pathogen="SARS-CoV-2",
+        test_result="positive",
+        between=["hospital_admission - 14 days", "hospital_admission + 7 days"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+            
+        },
+    ),
+
+    # in those attending ae had they had positive cov in pc
+    covid_primary_care_before_hospital_admission = patients.with_these_clinical_events(
+        codelist=covid_primary_care_codes,
+        between=["hospital_admission - 14 days", "hospital_admission"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+       
         },
     ),
 
