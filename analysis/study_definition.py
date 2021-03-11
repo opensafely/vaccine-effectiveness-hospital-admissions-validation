@@ -92,7 +92,8 @@ study = StudyDefinition(
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
-            "incidence": 0.4
+            "incidence": 0.4,
+            "category": {"ratios": {306706006: 0.5, 1066391000000105: 0.5}},
         }
         
     ),
