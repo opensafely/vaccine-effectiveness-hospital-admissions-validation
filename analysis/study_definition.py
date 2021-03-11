@@ -8,7 +8,7 @@ end_date="2021-01-01"
 
 # ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_icu": str(1066391000000105, "discharged_to_emergency_short_stay": str(1066331000000109))}
 
-ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharged_to_high_dependency": str(1066361000000104), "discharged_to_icu": str(1066391000000105), "discharged_to_hospice": str(183919006), "patient_transfer": str(19712007)}
+ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharged_to_high_dependency": str(1066361000000104), "discharged_to_icu": str(1066391000000105), "discharged_to_hospice": str(183919006), "patient_transfer": str(19712007), "discharge_to_ambulatory": str(1066341000000100)}
 
 ae_discharge_list = [value for (key, value) in ae_discharge_dict.items()]
 
