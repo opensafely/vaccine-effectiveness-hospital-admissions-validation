@@ -12,9 +12,9 @@ ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emerge
 
 ae_discharge_list = [value for (key, value) in ae_discharge_dict.items()]
 
+diagnosis_codes = {"uppper_resp_infection": str(54150009), "lower_resp_infection": str(50417007), "pneumonia": str(233604007), "sars": str(398447004), "resp_failure": str(409622000)}
 
-
-
+respiratory_codes = [value for (key, value) in diagnosis_codes.items()]
 
 
 study = StudyDefinition(
@@ -134,6 +134,18 @@ study = StudyDefinition(
         }
     ),
 
+    # date of ae attendance due to respiratory
+    ae_attendance_respiratory_status = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        with_these_diagnoses=respiratory_codes,
+        return_expectations= {
+            "incidence": 0.9
+        }
+    ),
+
     # in those attending ae had they had recent positiv cov test
     positive_covid_test_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
@@ -148,7 +160,7 @@ study = StudyDefinition(
     ),
 
     # looks at more historical positive cov test
-    positive_covid_test_before_ae_attendance_month = patients.with_test_result_in_sgss(
+    positive_covid_test_month_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=["ae_attendance_date - 28 days", "ae_attendance_date -14 days"],
@@ -218,6 +230,19 @@ study = StudyDefinition(
             
         },
     ),
+
+    positive_covid_test_month_before_hospital_admission = patients.with_test_result_in_sgss(
+        pathogen="SARS-CoV-2",
+        test_result="positive",
+        between=["hospital_admission - 28 days", "hospital_admission + 7 days"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+            
+        },
+    ),
+
 
     # in those attending ae had they had positive cov in pc
     covid_primary_care_before_hospital_admission = patients.with_these_clinical_events(
