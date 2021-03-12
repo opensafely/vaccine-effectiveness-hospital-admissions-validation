@@ -163,7 +163,7 @@ study = StudyDefinition(
     positive_covid_test_month_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["ae_attendance_date - 28 days", "ae_attendance_date -14 days"],
+        between=["ae_attendance_date - 28 days", "ae_attendance_date +7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
