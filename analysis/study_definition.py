@@ -6,7 +6,7 @@ from codelists import *
 start_date="2020-09-01"
 end_date="2021-01-01"
 
-ae_discharge_dict = {"discharged_to_ward": str(306706006)}
+ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharge_to_ambulatory": str(1066341000000100), "discharged_to_icu": str(1066391000000105)}
 
 # ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharged_to_high_dependency": str(1066361000000104), "discharged_to_icu": str(1066391000000105), "discharged_to_hospice": str(183919006), "patient_transfer": str(19712007), "discharge_to_ambulatory": str(1066341000000100)}
 
@@ -63,8 +63,41 @@ study = StudyDefinition(
        
     ),
 
+    primary_covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=covid_codes,
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
+
+    covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
+    hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
     ae_attendance_any = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         return_expectations={
@@ -73,11 +106,13 @@ study = StudyDefinition(
         
     ),
 
+   
+
 
 
     #did they attend ae ever and discharged to hosp or icu
     ae_attendance = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=ae_discharge_list,
@@ -88,7 +123,7 @@ study = StudyDefinition(
     ),
 
     discharge_destination = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
@@ -100,6 +135,7 @@ study = StudyDefinition(
 
     # want people who attended ae then go on to be admitted to hosp
     ae_attendance_date = patients.attended_emergency_care(
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="date_arrived",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
@@ -111,7 +147,7 @@ study = StudyDefinition(
 
     # covid status of those attendance to ae
     ae_attendance_covid_status = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
@@ -124,7 +160,7 @@ study = StudyDefinition(
 
     # date of ae attendance due to covid
     ae_attendance_covid_status_date = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="date_arrived",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -136,7 +172,7 @@ study = StudyDefinition(
 
     # date of ae attendance due to respiratory
     ae_attendance_respiratory_status = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "primary_covid_hospital_admission"],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -184,39 +220,7 @@ study = StudyDefinition(
         },
     ),
     
-
-
-    primary_covid_hospital_admission=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_primary_diagnoses=covid_codes,
-        on_or_after="index_date",
-        date_format="YYYY-MM-DD",
-        find_last_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-
-    covid_hospital_admission=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        on_or_after="index_date",
-        date_format="YYYY-MM-DD",
-        find_last_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-
-    hospital_admission=patients.admitted_to_hospital(
-        returning="date_admitted",
-        on_or_after="index_date",
-        date_format="YYYY-MM-DD",
-        find_last_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
+    
 
     # looks at more historical positive cov test
     positive_covid_test_before_hospital_admission = patients.with_test_result_in_sgss(
