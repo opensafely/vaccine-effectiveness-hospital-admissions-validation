@@ -11,10 +11,20 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
   
-
-  generate_notebook:
-    run: jupyter:latest jupyter nbconvert /workspace/analysis/emergency_admission_validation.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
+  generate_results:
+    run: python:latest python analysis/generate_results.py
     needs: [generate_study_population]
     outputs:
       moderately_sensitive:
-        notebook: output/emergency_admission_validation.html
+        hosp_dict: output/emergency_hospitalisation.json
+        ae_dict: output/ae.json
+        discharge_csv: output/discharge_destination.csv
+        performance_dict: output/model_performance.json
+        sensitivity_dict: output/sensitivity.json
+  
+  generate_notebook:
+    run: jupyter:latest jupyter nbconvert /workspace/analysis/results.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
+    needs: [generate_study_population]
+    outputs:
+      moderately_sensitive:
+        notebook: output/results.html
