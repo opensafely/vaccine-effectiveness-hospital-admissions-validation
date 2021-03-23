@@ -65,7 +65,7 @@ study = StudyDefinition(
        
     ),
 
-    primary_covid_hospital_admission=patients.admitted_to_hospital(
+    emergency_primary_covid_hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
         with_these_primary_diagnoses=covid_codes,
         with_admission_method="21",
@@ -77,8 +77,18 @@ study = StudyDefinition(
         },
     ),
 
+    primary_covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_primary_diagnoses=covid_codes,
+        on_or_after="index_date + 7 days",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
 
-    covid_hospital_admission=patients.admitted_to_hospital(
+    emergency_covid_hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
         with_these_diagnoses=covid_codes,
         with_admission_method="21",
@@ -90,10 +100,31 @@ study = StudyDefinition(
         },
     ),
 
-    hospital_admission=patients.admitted_to_hospital(
+    covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        on_or_after="index_date + 7 days",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
+    emergency_hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
         on_or_after="index_date + 7 days",
         with_admission_method="21",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
+    hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        on_or_after="index_date + 7 days",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={
@@ -117,7 +148,7 @@ study = StudyDefinition(
 
     #did they attend ae ever and discharged to hosp or icu
     ae_attendance = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=ae_discharge_list,
@@ -128,7 +159,7 @@ study = StudyDefinition(
     ),
 
     ae_attendance_no_discharge = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         return_expectations={
@@ -138,7 +169,7 @@ study = StudyDefinition(
     ),
 
     discharge_destination = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
@@ -150,7 +181,7 @@ study = StudyDefinition(
 
     # want people who attended ae then go on to be admitted to hosp
     ae_attendance_date = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="date_arrived",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
@@ -162,7 +193,7 @@ study = StudyDefinition(
 
     # want people who attended ae then go on to be admitted to hosp
     ae_attendance_no_discharge_date = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="date_arrived",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
@@ -173,7 +204,7 @@ study = StudyDefinition(
 
     # covid status of those attendance to ae
     ae_attendance_covid_status = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="binary_flag",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
@@ -186,7 +217,7 @@ study = StudyDefinition(
 
     # date of ae attendance due to covid
     ae_attendance_covid_status_date = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="date_arrived",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -198,7 +229,7 @@ study = StudyDefinition(
 
     # date of ae attendance due to respiratory
     ae_attendance_respiratory_status = patients.attended_emergency_care(
-        between=["primary_covid_hospital_admission - 7 days", "primary_covid_hospital_admission"],
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -252,7 +283,7 @@ study = StudyDefinition(
     positive_covid_test_before_hospital_admission = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["hospital_admission - 14 days", "hospital_admission + 7 days"],
+        between=["emergency_hospital_admission - 14 days", "emergency_hospital_admission + 7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -264,7 +295,7 @@ study = StudyDefinition(
     positive_covid_test_month_before_hospital_admission = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["hospital_admission - 28 days", "hospital_admission + 7 days"],
+        between=["emergency_hospital_admission - 28 days", "emergency_hospital_admission + 7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -277,7 +308,7 @@ study = StudyDefinition(
     # in those attending ae had they had positive cov in pc
     covid_primary_care_before_hospital_admission = patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
-        between=["hospital_admission - 14 days", "hospital_admission"],
+        between=["emergency_hospital_admission - 14 days", "emergency_hospital_admission"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
