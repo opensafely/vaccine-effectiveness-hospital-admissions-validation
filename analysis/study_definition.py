@@ -8,11 +8,13 @@ end_date="2021-01-01"
 
 ae_discharge_dict = {1066341000000100:"Ambulatory Emergency Care", 19712007: "Patient Transfer", 183919006: "Other", 1066361000000104: "High dependency unit", 305398007: "Mortuary", 1066381000000108: "Other", 1066331000000109: "Emergency department short stay ward", 306705005: "Other", 306706006:"Ward", 306689006: "Home", 306694006: "Residential or Nursing Home", 306691003: "Residential or Nursing Home", 1066351000000102: "Other", 1066401000000108: "Other", 1066371000000106: "Coronary Care Unit", 50861005: "Other", 1066391000000105: "ICU", "missing": "missing"}
 
+hosp_discharge_list = [str(306706006), str(1066331000000109), str(1066391000000105)]
+
 # ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharge_to_ambulatory": str(1066341000000100), "discharged_to_icu": str(1066391000000105)}
 
 # ae_discharge_dict = {"discharged_to_ward": str(306706006), "discharged_to_emergency_short_stay": str(1066331000000109), "discharged_to_high_dependency": str(1066361000000104), "discharged_to_icu": str(1066391000000105), "discharged_to_hospice": str(183919006), "patient_transfer": str(19712007), "discharge_to_ambulatory": str(1066341000000100)}
 
-ae_discharge_list = [value for (key, value) in ae_discharge_dict.items()]
+ae_discharge_list = [str(key) for (key, value) in ae_discharge_dict.items()]
 
 diagnosis_codes = {"uppper_resp_infection": str(54150009), "lower_resp_infection": str(50417007), "pneumonia": str(233604007), "sars": str(398447004), "resp_failure": str(409622000)}
 
@@ -152,6 +154,17 @@ study = StudyDefinition(
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=ae_discharge_list,
+        return_expectations={
+            "incidence": 0.4
+        }
+        
+    ),
+
+    ae_attendance_hosp_discharge = patients.attended_emergency_care(
+        between=["emergency_primary_covid_hospital_admission - 7 days", "emergency_primary_covid_hospital_admission"],
+        returning="binary_flag",
+        find_last_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         return_expectations={
             "incidence": 0.4
         }
