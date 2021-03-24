@@ -6,7 +6,7 @@ from codelists import *
 start_date="2020-09-01"
 end_date="2021-01-01"
 
-ae_discharge_dict = {1066341000000100:"Ambulatory Emergency Care", 19712007: "Patient Transfer", 183919006: "Other", 1066361000000104: "High dependency unit", 305398007: "Mortuary", 1066381000000108: "Other", 1066331000000109: "Emergency department short stay ward", 306705005: "Other", 306706006:"Ward", 306689006: "Home", 306694006: "Nursing Home", 306691003: "Residential Home", 1066351000000102: "Other", 1066401000000108: "Other", 1066371000000106: "Coronary Care Unit", 50861005: "Other", 1066391000000105: "ICU", "missing": "missing"}
+ae_discharge_dict = {1066341000000100:"Ambulatory Emergency Care", 19712007: "Patient Transfer", 183919006: "Hospice", 1066361000000104: "High dependency unit", 305398007: "Mortuary", 1066381000000108: "Special baby care unit", 1066331000000109: "Emergency department short stay ward", 306705005: "Police custody", 306706006:"Ward", 306689006: "Home", 306694006: "Nursing Home", 306691003: "Residential Home", 1066351000000102: "Hospital at home", 1066401000000108: "Neonatal ICU", 1066371000000106: "Coronary Care Unit", 50861005: "Legal Custody", 1066391000000105: "ICU", "missing": "missing"}
 
 hosp_discharge_list = [str(306706006), str(1066331000000109), str(1066391000000105)]
 
@@ -65,7 +65,7 @@ study = StudyDefinition(
 
     hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
-        on_or_after="index_date + 7 days",
+        on_or_after="index_date + 1 day",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={
@@ -86,7 +86,7 @@ study = StudyDefinition(
     
     emergency_hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
-        on_or_after="index_date + 7 days",
+        on_or_after="index_date + 1 day",
         with_admission_method="21",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -100,7 +100,7 @@ study = StudyDefinition(
         returning="date_admitted",
         with_these_primary_diagnoses=covid_codes,
         with_admission_method="21",
-        on_or_after="index_date + 7 days",
+        on_or_after="index_date + 1 day",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={

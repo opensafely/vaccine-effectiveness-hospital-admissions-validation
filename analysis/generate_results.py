@@ -7,6 +7,12 @@ import json
 
 df = pd.read_csv('output/input_descriptives.csv')
 
+#number of ae attendances
+
+num_ae_attendances = Counter(df['ae_attendance_count'])
+with open('output/num_ae_attendances.json', 'w') as fp:
+    json.dump(num_ae_attendances, fp)
+
 
 #emergency hospitalisation
 
@@ -60,7 +66,7 @@ missing = prim_cov_ae_discharge.isna().sum()
 destination_dict = Counter(prim_cov_ae_discharge[prim_cov_ae_discharge.notnull()])
 destination_dict['missing'] = missing
 
-discharge_dict = {1066341000000100:"Ambulatory Emergency Care", 19712007: "Patient Transfer", 183919006: "Other", 1066361000000104: "High dependency unit", 305398007: "Mortuary", 1066381000000108: "Other", 1066331000000109: "Emergency department short stay ward", 306705005: "Other", 306706006:"Ward", 306689006: "Home", 306694006: "Nursing Home", 306691003: "Residential Home", 1066351000000102: "Other", 1066401000000108: "Other", 1066371000000106: "Coronary Care Unit", 50861005: "Other", 1066391000000105: "ICU", "missing": "missing"}
+discharge_dict = {1066341000000100:"Ambulatory Emergency Care", 19712007: "Patient Transfer", 183919006: "Hospice", 1066361000000104: "High dependency unit", 305398007: "Mortuary", 1066381000000108: "Special baby care unit", 1066331000000109: "Emergency department short stay ward", 306705005: "Police custody", 306706006:"Ward", 306689006: "Home", 306694006: "Nursing Home", 306691003: "Residential Home", 1066351000000102: "Hospital at home", 1066401000000108: "Neonatal ICU", 1066371000000106: "Coronary Care Unit", 50861005: "Legal Custody", 1066391000000105: "ICU", "missing": "missing"}
 percent_dict = {}
 data = []
 total = 0
