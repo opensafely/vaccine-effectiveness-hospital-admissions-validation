@@ -88,7 +88,8 @@ study = StudyDefinition(
         returning="number_of_matches_in_period",
         find_last_match_in_period=True,
         return_expectations={
-            "incidence": 0.4
+            "incidence": 0.4,
+             "int": {"distribution": "normal", "mean": 2, "stddev": 1},
         }
         
     ),
