@@ -37,6 +37,30 @@ with open('output/emergency_hospitalisation.json', 'w') as fp:
     json.dump(emergency_hospitalisation_dict, fp)
 
 
+# a&e attendance in emergency hospital admissions
+num_patients_attended_ae = len(df[(df['emergency_hospital_admission'].notna() & df['any_ae_attendance_any_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_with_discharge = len(df[(df['emergency_hospital_admission'].notna() & df['any_ae_attendance_with_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov = len(df[(df['emergency_hospital_admission'].notna() & df['any_ae_attendance_covid_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_resp = len(df[(df['emergency_hospital_admission'].notna() & df['any_ae_attendance_respiratory_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov_pc = len(df[(df['emergency_hospital_admission'].notna() & df['any_covid_primary_care_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test = len(df[(df['emergency_hospital_admission'].notna() & df['any_positive_covid_test_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test_month = len(df[(df['emergency_hospital_admission'].notna() & df['any_positive_covid_test_month_before_ae_attendance']==1)]['patient_id'].unique())
+
+any_ae_dict = {
+    "attended_ae": num_patients_attended_ae,
+    "attended_ae_with_discharge": num_patients_attended_ae_with_discharge,
+    "attended_ae_cov": num_patients_attended_ae_cov,
+    "attended_ae_resp": num_patients_attended_ae_resp,
+    "attended_ae_cov_pc": num_patients_attended_ae_cov_pc,
+    "attended_ae_pos_test": num_patients_attended_ae_pos_test,
+    "attended_ae_pos_test_month": num_patients_attended_ae_pos_test_month,
+}
+
+with open('output/ae_any.json', 'w') as fp:
+    json.dump(any_ae_dict, fp)
+
+
+
 # a&e attendance in emergency covid hospital admissions
 num_patients_attended_ae = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_any_discharge']==1)]['patient_id'].unique())
 num_patients_attended_ae_with_discharge = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_with_discharge']==1)]['patient_id'].unique())
