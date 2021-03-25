@@ -107,6 +107,18 @@ study = StudyDefinition(
             "incidence": 0.3,
         },
     ),
+
+    emergency_covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        with_admission_method="21",
+        on_or_after="index_date + 1 day",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
         
     ae_attendance_any_discharge = patients.attended_emergency_care(
         between=["index_date", end_date],

@@ -37,14 +37,14 @@ with open('output/emergency_hospitalisation.json', 'w') as fp:
     json.dump(emergency_hospitalisation_dict, fp)
 
 
-# a&e attendance in emergency primary covid hospital admissions
-num_patients_attended_ae = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['ae_attendance_any_discharge']==1)]['patient_id'].unique())
-num_patients_attended_ae_with_discharge = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['ae_attendance_with_discharge']==1)]['patient_id'].unique())
-num_patients_attended_ae_cov = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['ae_attendance_covid_status']==1)]['patient_id'].unique())
-num_patients_attended_ae_resp = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['ae_attendance_respiratory_status']==1)]['patient_id'].unique())
-num_patients_attended_ae_cov_pc = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['covid_primary_care_before_ae_attendance']==1)]['patient_id'].unique())
-num_patients_attended_ae_pos_test = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['positive_covid_test_before_ae_attendance']==1)]['patient_id'].unique())
-num_patients_attended_ae_pos_test_month = len(df[(df['emergency_primary_covid_hospital_admission'].notna() & df['positive_covid_test_month_before_ae_attendance']==1)]['patient_id'].unique())
+# a&e attendance in emergency covid hospital admissions
+num_patients_attended_ae = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_any_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_with_discharge = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_with_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_covid_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_resp = len(df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_respiratory_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov_pc = len(df[(df['emergency_covid_hospital_admission'].notna() & df['covid_primary_care_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test = len(df[(df['emergency_covid_hospital_admission'].notna() & df['positive_covid_test_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test_month = len(df[(df['emergency_covid_hospital_admission'].notna() & df['positive_covid_test_month_before_ae_attendance']==1)]['patient_id'].unique())
 
 ae_dict = {
     "attended_ae": num_patients_attended_ae,
@@ -61,7 +61,7 @@ with open('output/ae.json', 'w') as fp:
 
 # discharge destination in those with primary cov in emergency hosp admissions (who went to ae)
 
-prim_cov_ae_discharge = df[(df['emergency_primary_covid_hospital_admission'].notna() & df['ae_attendance_any_discharge']==1)]['discharge_destination']
+prim_cov_ae_discharge = df[(df['emergency_covid_hospital_admission'].notna() & df['ae_attendance_any_discharge']==1)]['discharge_destination']
 missing = prim_cov_ae_discharge.isna().sum()
 destination_dict = Counter(prim_cov_ae_discharge[prim_cov_ae_discharge.notnull()])
 destination_dict['missing'] = missing
@@ -105,8 +105,8 @@ discharge_destination_df.to_csv('output/discharge_destination.csv')
 #models
 df = pd.read_csv('output/input.csv')
 
-positive_covid_patients_sus = df[df['emergency_primary_covid_hospital_admission'].notna()]
-negative_covid_patients_sus = df[~df['emergency_primary_covid_hospital_admission'].notna()]
+positive_covid_patients_sus = df[df['emergency_covid_hospital_admission'].notna()]
+negative_covid_patients_sus = df[~df['emergency_covid_hospital_admission'].notna()]
 
 # model_a
 
@@ -180,6 +180,33 @@ MCC_c = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_
 
 output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
 output.to_csv('output/model_c.csv')
+
+#model_d
+
+positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['ae_attendance_respiratory_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+
+
+model_d_patients_positive = set(list(positive_covid_patients_d['patient_id']))
+model_d_patients_negative = set(list(negative_covid_patients_d['patient_id']))
+
+
+sus_pos_ecds_pos = len(list(set(sus_patients_positive) & set(model_d_patients_positive)))
+sus_pos_ecds_neg = len(list(set(sus_patients_positive) & set(model_d_patients_negative)))
+sus_neg_ecds_pos = len(list(set(sus_patients_negative) & set(model_d_patients_positive)))
+sus_neg_ecds_neg = len(list(set(sus_patients_negative) & set(model_d_patients_negative)))
+
+sensitivity_d = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_pos_ecds_neg))*100
+specificity_d = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
+PPV_d = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
+NPV_d = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
+MCC_d = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
+
+output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
+output.to_csv('output/model_d.csv')
+
+
+
 # dictionary of model results
 
 performance_dict = {
@@ -203,6 +230,13 @@ performance_dict = {
         "ppv": PPV_c,
         "npv": NPV_c,
         "mcc": MCC_c
+    },
+    "D": {
+        "sensitivity": sensitivity_d,
+        "specificity": specificity_d,
+        "ppv": PPV_d,
+        "npv": NPV_d,
+        "mcc": MCC_d
     }
 }
 
