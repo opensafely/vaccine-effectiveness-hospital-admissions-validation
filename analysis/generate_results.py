@@ -161,7 +161,7 @@ negative_covid_patients_sus = df[~df['emergency_covid_hospital_admission'].notna
 # model_a
 
 positive_covid_patients_a = df[(df['ae_attendance_any_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_a = df[(df['ae_attendance_any_discharge']==0) | ((df['ae_attendance_any_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+negative_covid_patients_a = df[(df['ae_attendance_any_discharge']==0) | ((df['ae_attendance_any_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 sus_patients_positive = set(list(positive_covid_patients_sus['patient_id']))
@@ -187,7 +187,7 @@ output.to_csv('output/model_a.csv')
 # model_b
 
 positive_covid_patients_b = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_b = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+negative_covid_patients_b = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_b_patients_positive = set(list(positive_covid_patients_b['patient_id']))
@@ -210,7 +210,7 @@ output.to_csv('output/model_b.csv')
 #model_c
 
 positive_covid_patients_c = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['ae_attendance_respiratory_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_c = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+negative_covid_patients_c = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_c_patients_positive = set(list(positive_covid_patients_c['patient_id']))
@@ -233,8 +233,8 @@ output.to_csv('output/model_c.csv')
 
 #model_d
 
-positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_month_before_ae_attendance'] ==1))]
-negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_month_before_ae_attendance'] ==0)))]
+positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==1)]
+negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0))]
 
 
 model_d_patients_positive = set(list(positive_covid_patients_d['patient_id']))
@@ -258,7 +258,7 @@ output.to_csv('output/model_d.csv')
 #model_e
 
 positive_covid_patients_e = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_e = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+negative_covid_patients_e = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_e_patients_positive = set(list(positive_covid_patients_e['patient_id']))
@@ -281,7 +281,7 @@ output.to_csv('output/model_e.csv')
 #model_f
 
 positive_covid_patients_f = df[(df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_f = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ( & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+negative_covid_patients_f = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_f_patients_positive = set(list(positive_covid_patients_f['patient_id']))
