@@ -183,8 +183,8 @@ output.to_csv('output/model_c.csv')
 
 #model_d
 
-positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['ae_attendance_respiratory_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
+positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0)))]
 
 
 model_d_patients_positive = set(list(positive_covid_patients_d['patient_id']))
@@ -196,15 +196,13 @@ sus_pos_ecds_neg = len(list(set(sus_patients_positive) & set(model_d_patients_ne
 sus_neg_ecds_pos = len(list(set(sus_patients_negative) & set(model_d_patients_positive)))
 sus_neg_ecds_neg = len(list(set(sus_patients_negative) & set(model_d_patients_negative)))
 
-sensitivity_d = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_pos_ecds_neg))*100
-specificity_d = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
-PPV_d = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
-NPV_d = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
-MCC_d = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
-
+sensitivity_b = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_pos_ecds_neg))*100
+specificity_b = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
+PPV_b = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
+NPV_b = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
+MCC_b = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
 output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
 output.to_csv('output/model_d.csv')
-
 
 
 # dictionary of model results
@@ -247,8 +245,8 @@ with open('output/model_performance.json', 'w') as fp:
 sensitivity_dict = {}
 
 # drop cov ae
-positive_covid_patients = df[(df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients = df[(df['ae_attendance_hosp_discharge']==0) | ((df['ae_attendance_hosp_discharge']==1) &  (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
+positive_covid_patients = df[(df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients = df[(df['ae_attendance_hosp_discharge']==0) | ((df['ae_attendance_hosp_discharge']==1) &  (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 model_patients_positive = set(list(positive_covid_patients['patient_id']))
 model_patients_negative = set(list(negative_covid_patients['patient_id']))
 sus_pos_ecds_pos = len(list(set(sus_patients_positive) & set(model_patients_positive)))
@@ -271,8 +269,8 @@ MCC = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_ne
 sensitivity_dict['pos_test'] = MCC
 
 #drop cov pc
-positive_covid_patients = df[((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) ))]
-negative_covid_patients = df[(df['ae_attendance_hosp_discharge']==0) | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_before_ae_attendance'] ==0))]
+positive_covid_patients = df[((df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_month_before_ae_attendance'] ==1) ))]
+negative_covid_patients = df[(df['ae_attendance_hosp_discharge']==0) | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0))]
 model_patients_positive = set(list(positive_covid_patients['patient_id']))
 model_patients_negative = set(list(negative_covid_patients['patient_id']))
 sus_pos_ecds_pos = len(list(set(sus_patients_positive) & set(model_patients_positive)))
