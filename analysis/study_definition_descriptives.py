@@ -402,4 +402,127 @@ study = StudyDefinition(
         },
     ),
     
+    ######
+    #All ae attendance
+    ######
+    all_ae_attendance_any_discharge = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations = {
+            "incidence": 0.5,
+            "category": {"ratios": {306706006: 0.5, 1066391000000105: 0.5}},}
+    ),
+
+    all_ae_attendance_any_discharge_date = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations = {
+            "incidence": 0.5,
+            "category": {"ratios": {306706006: 0.5, 1066391000000105: 0.5}},}
+    ),
+
+    
+    all_ae_attendance_with_discharge = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        discharged_to=ae_discharge_list,
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.4
+        }
+        
+    ),
+
+    all_ae_attendance_hosp_discharge = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        find_last_match_in_period=True,
+        discharged_to=hosp_discharge_list,
+        return_expectations={
+            "incidence": 0.4
+        }
+        
+    ),
+
+    
+    all_discharge_destination = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="discharge_destination",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.4,
+            "category": {"ratios": {306706006: 0.5, 1066391000000105: 0.5}},
+        }
+        
+    ),
+
+
+    # covid status of those attendance to ae
+    all_ae_attendance_covid_status = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        find_last_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations= {
+            "incidence": 0.9
+        }
+    ),
+
+    
+    #  ae attendance due to respiratory
+    all_ae_attendance_respiratory_status = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        with_these_diagnoses=respiratory_codes,
+        return_expectations= {
+            "incidence": 0.9
+        }
+    ),
+
+
+    
+
+    # in those attending ae had they had recent positiv cov test
+    all_positive_covid_test_before_ae_attendance = patients.with_test_result_in_sgss(
+        pathogen="SARS-CoV-2",
+        test_result="positive",
+        between=["any_ae_attendance_any_discharge_date - 14 days", "any_ae_attendance_any_discharge_date + 7 days"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+            
+        },
+    ),
+
+    # looks at more historical positive cov test
+    all_positive_covid_test_month_before_ae_attendance = patients.with_test_result_in_sgss(
+        pathogen="SARS-CoV-2",
+        test_result="positive",
+        between=["any_ae_attendance_any_discharge_date - 28 days", "any_ae_attendance_any_discharge_date +7 days"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+            
+        },
+    ),
+
+    # in those attending ae had they had positive cov in pc
+    all_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
+        codelist=covid_primary_care_codes,
+        between=["any_ae_attendance_any_discharge_date - 14 days", "any_ae_attendance_any_discharge_date"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+       
+        },
+    ),
 )
