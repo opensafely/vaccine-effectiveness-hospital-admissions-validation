@@ -26,6 +26,7 @@ actions:
         hosp_dict: output/emergency_hospitalisation.json
         ae_dict: output/ae.json
         any_ae_dict: output/ae_any.json
+        all_ae_dict: output/ae_all.json
         discharge_csv: output/discharge_destination.csv
         performance_dict: output/model_performance.json
         sensitivity_dict: output/sensitivity.json

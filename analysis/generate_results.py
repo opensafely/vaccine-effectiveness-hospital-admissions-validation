@@ -338,6 +338,13 @@ performance_dict = {
         "ppv": PPV_e,
         "npv": NPV_e,
         "mcc": MCC_e
+    },
+    "F": {
+        "sensitivity": sensitivity_f,
+        "specificity": specificity_f,
+        "ppv": PPV_f,
+        "npv": NPV_f,
+        "mcc": MCC_f
     }
 }
 
