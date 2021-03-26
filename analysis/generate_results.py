@@ -37,14 +37,14 @@ with open('output/emergency_hospitalisation.json', 'w') as fp:
     json.dump(emergency_hospitalisation_dict, fp)
 
 # a&e attendance all
-num_patients_attended_ae = len(df[(df['emergency_hospital_admission'].notna() & df['all_ae_attendance_any_discharge']==1)]['patient_id'].unique())
-num_patients_attended_ae_with_discharge = len(df[(df['emergency_hospital_admission'].notna() & df['all_ae_attendance_with_discharge']==1)]['patient_id'].unique())
-num_patients_attended_ae_with_hosp_discharge = len(df[(df['emergency_hospital_admission'].notna() & df['all_ae_attendance_hosp_discharge']==1)]['patient_id'].unique())
-num_patients_attended_ae_cov = len(df[(df['emergency_hospital_admission'].notna() & df['all_ae_attendance_covid_status']==1)]['patient_id'].unique())
-num_patients_attended_ae_resp = len(df[(df['emergency_hospital_admission'].notna() & df['all_ae_attendance_respiratory_status']==1)]['patient_id'].unique())
-num_patients_attended_ae_cov_pc = len(df[(df['emergency_hospital_admission'].notna() & df['all_covid_primary_care_before_ae_attendance']==1)]['patient_id'].unique())
-num_patients_attended_ae_pos_test = len(df[(df['emergency_hospital_admission'].notna() & df['all_positive_covid_test_before_ae_attendance']==1)]['patient_id'].unique())
-num_patients_attended_ae_pos_test_month = len(df[(df['emergency_hospital_admission'].notna() & df['all_positive_covid_test_month_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae = len(df[(df['hospital_admission'].notna() & df['all_ae_attendance_any_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_with_discharge = len(df[(df['hospital_admission'].notna() & df['all_ae_attendance_with_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_with_hosp_discharge = len(df[(df['hospital_admission'].notna() & df['all_ae_attendance_hosp_discharge']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov = len(df[(df['hospital_admission'].notna() & df['all_ae_attendance_covid_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_resp = len(df[(df['hospital_admission'].notna() & df['all_ae_attendance_respiratory_status']==1)]['patient_id'].unique())
+num_patients_attended_ae_cov_pc = len(df[(df['hospital_admission'].notna() & df['all_covid_primary_care_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test = len(df[(df['hospital_admission'].notna() & df['all_positive_covid_test_before_ae_attendance']==1)]['patient_id'].unique())
+num_patients_attended_ae_pos_test_month = len(df[(df['hospital_admission'].notna() & df['all_positive_covid_test_month_before_ae_attendance']==1)]['patient_id'].unique())
 
 all_ae_dict = {
     "attended_ae": num_patients_attended_ae,
