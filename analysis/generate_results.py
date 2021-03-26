@@ -207,10 +207,10 @@ MCC_b = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_
 output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
 output.to_csv('output/model_b.csv')
 
-#model_c
+# model_c
 
-positive_covid_patients_c = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['ae_attendance_respiratory_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_c = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
+positive_covid_patients_c = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients_c = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_c_patients_positive = set(list(positive_covid_patients_c['patient_id']))
@@ -227,14 +227,13 @@ specificity_c = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
 PPV_c = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
 NPV_c = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
 MCC_c = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
-
 output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
 output.to_csv('output/model_c.csv')
 
-#model_d
+# model_d
 
-positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==1)]
-negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0))]
+positive_covid_patients_d = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_week_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients_d = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_week_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_d_patients_positive = set(list(positive_covid_patients_d['patient_id']))
@@ -255,10 +254,12 @@ output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + 
 output.to_csv('output/model_d.csv')
 
 
+
+
 #model_e
 
-positive_covid_patients_e = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_e = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
+positive_covid_patients_e = df[(df['ae_attendance_hosp_discharge']==1) & ((df['ae_attendance_covid_status']==1) | (df['ae_attendance_respiratory_status']==1) | (df['positive_covid_test_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
+negative_covid_patients_e = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['ae_attendance_covid_status']==0) & (df['ae_attendance_respiratory_status']==1) & (df['positive_covid_test_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
 
 
 model_e_patients_positive = set(list(positive_covid_patients_e['patient_id']))
@@ -275,31 +276,10 @@ specificity_e = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
 PPV_e = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
 NPV_e = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
 MCC_e = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
+
 output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
 output.to_csv('output/model_e.csv')
 
-#model_f
-
-positive_covid_patients_f = df[(df['ae_attendance_hosp_discharge']==1) & ((df['positive_covid_test_month_before_ae_attendance'] ==1) | (df['covid_primary_care_before_ae_attendance'] ==1))]
-negative_covid_patients_f = df[df['ae_attendance_hosp_discharge']==0 | ((df['ae_attendance_hosp_discharge']==1) & (df['positive_covid_test_month_before_ae_attendance'] ==0) & (df['covid_primary_care_before_ae_attendance'] ==0))]
-
-
-model_f_patients_positive = set(list(positive_covid_patients_f['patient_id']))
-model_f_patients_negative = set(list(negative_covid_patients_f['patient_id']))
-
-
-sus_pos_ecds_pos = len(list(set(sus_patients_positive) & set(model_f_patients_positive)))
-sus_pos_ecds_neg = len(list(set(sus_patients_positive) & set(model_f_patients_negative)))
-sus_neg_ecds_pos = len(list(set(sus_patients_negative) & set(model_f_patients_positive)))
-sus_neg_ecds_neg = len(list(set(sus_patients_negative) & set(model_f_patients_negative)))
-
-sensitivity_f = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_pos_ecds_neg))*100
-specificity_f = (sus_neg_ecds_neg/(sus_neg_ecds_pos + sus_neg_ecds_neg))*100
-PPV_f = (sus_pos_ecds_pos/(sus_pos_ecds_pos + sus_neg_ecds_pos))*100
-NPV_f = (sus_neg_ecds_neg/(sus_neg_ecds_neg + sus_pos_ecds_neg))*100
-MCC_f = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
-output = pd.DataFrame([[sus_pos_ecds_pos, sus_neg_ecds_pos, (sus_pos_ecds_pos + sus_neg_ecds_pos)], [sus_pos_ecds_neg, sus_neg_ecds_neg, (sus_pos_ecds_neg + sus_neg_ecds_neg)], [(sus_pos_ecds_pos+sus_pos_ecds_neg), (sus_neg_ecds_pos+sus_neg_ecds_neg), (sus_pos_ecds_pos + sus_pos_ecds_neg + sus_neg_ecds_pos + sus_neg_ecds_neg)]], columns=["SUS-positive", "SUS-negative", "Total"], index=["ECDS-positive", "ECDS-negative", "Total"])
-output.to_csv('output/model_f.csv')
 
 # dictionary of model results
 
@@ -338,13 +318,6 @@ performance_dict = {
         "ppv": PPV_e,
         "npv": NPV_e,
         "mcc": MCC_e
-    },
-    "F": {
-        "sensitivity": sensitivity_f,
-        "specificity": specificity_f,
-        "ppv": PPV_f,
-        "npv": NPV_f,
-        "mcc": MCC_f
     }
 }
 
