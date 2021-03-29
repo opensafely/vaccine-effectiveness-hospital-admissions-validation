@@ -140,7 +140,7 @@ for key, value in destination_dict.items():
 for key, value in destination_dict.items():
     if key=="Other":
         percent = (value/total) * 100
-        row = ["Other", value, percent]
+        row = ["Other", percent]
         data.append(row)
     else:
         percent = (value/total) * 100
