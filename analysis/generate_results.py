@@ -7,6 +7,11 @@ import json
 
 df = pd.read_csv('output/input_descriptives.csv')
 
+#population size
+num_patients = len(df['patient_id'].unique())
+with open('output/num_patients.json', 'w') as fp:
+    json.dump(num_patients, fp)
+
 #number of ae attendances
 
 num_ae_attendances = Counter(df['ae_attendance_count'])
@@ -368,7 +373,7 @@ sus_pos_ecds_neg = len(list(set(sus_patients_positive) & set(model_patients_nega
 sus_neg_ecds_pos = len(list(set(sus_patients_negative) & set(model_patients_positive)))
 sus_neg_ecds_neg = len(list(set(sus_patients_negative) & set(model_patients_negative)))
 MCC = ((sus_pos_ecds_pos * sus_neg_ecds_neg)-(sus_neg_ecds_pos * sus_pos_ecds_neg))/math.sqrt((sus_pos_ecds_pos + sus_neg_ecds_pos)*(sus_pos_ecds_neg+sus_neg_ecds_neg)*(sus_pos_ecds_pos + sus_pos_ecds_neg)*(sus_neg_ecds_pos+sus_neg_ecds_neg))
-sensitivity_dict['cov_pc'] = MCC
+sensitivity_dict['cov_code'] = MCC
 
 
 
