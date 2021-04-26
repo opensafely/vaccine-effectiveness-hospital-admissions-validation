@@ -294,7 +294,7 @@ study = StudyDefinition(
     positive_covid_test_month_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["ae_attendance_any_discharge_date - 28 days", "ae_attendance_any_discharge_date +7 days"],
+        between=["ae_attendance_any_discharge_date - 28 days", "ae_attendance_any_discharge_date + 7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -315,17 +315,17 @@ study = StudyDefinition(
         },
     ),
     
-    # in those attending ae had they had suspcted positive cov in pc
     suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
+        codelist= covid_primary_care_suspected_codes, 
         between=["ae_attendance_any_discharge_date - 14 days", "ae_attendance_any_discharge_date"],
-        returning=“binary_flag”,
+        returning="binary_flag",
         return_expectations={
-            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
-            “rate”: “exponential_increase”,
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
        
         },
     ),
+    
     
 
     
@@ -455,17 +455,19 @@ study = StudyDefinition(
         },
     ),
     
-    # in those attending ae had they had suspcted positive cov in pc
     any_suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
+        codelist= covid_primary_care_suspected_codes, 
         between=["any_ae_attendance_any_discharge_date - 14 days", "any_ae_attendance_any_discharge_date"],
-        returning=“binary_flag”,
+        returning="binary_flag",
         return_expectations={
-            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
-            “rate”: “exponential_increase”,
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
        
         },
     ),
+    
+    
+    
     
     ######
     #All ae attendance
@@ -591,15 +593,20 @@ study = StudyDefinition(
         },
     ),
     
-    # in those attending ae had they had suspcted positive cov in pc
+    
     all_suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
+        codelist= covid_primary_care_suspected_codes, 
         between=["all_ae_attendance_any_discharge_date - 14 days", "all_ae_attendance_any_discharge_date"],
-        returning=“binary_flag”,
+        returning="binary_flag",
         return_expectations={
-            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
-            “rate”: “exponential_increase”,
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
        
         },
     ),
+    
+    
+    
+    
+  
 )
