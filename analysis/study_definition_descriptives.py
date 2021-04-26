@@ -62,6 +62,44 @@ study = StudyDefinition(
         ),
        
     ),
+    
+    high_risk=patients.with_these_clinical_events(
+            high_risk_codes, # note no date limits set
+            find_last_match_in_period = True,
+            return_expectations={"incidence": 0.02,},
+        ),
+    
+    moderate_risk=patients.with_these_clinical_events(
+            moderate_risk_codes, # note no date limits set
+            find_last_match_in_period = True,
+            return_expectations={"incidence": 0.02,},
+        ),
+    
+    low_risk=patients.with_these_clinical_events(
+            low_risk_codes, # note no date limits set
+            find_last_match_in_period = True,
+            return_expectations={"incidence": 0.02,},
+        ),
+    
+    risk_group=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "low": """ low_risk = 1 """,
+            "medium": """ moderate_risk = 1""",
+            "high": """ high_risk = 1""",
+           
+        },
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "low": 0.5,
+                    "medium": 0.3,
+                    "high": 0.2,
+                }
+            },
+        },
+    ),
 
     hospital_admission=patients.admitted_to_hospital(
         returning="date_admitted",
@@ -277,6 +315,18 @@ study = StudyDefinition(
         },
     ),
     
+    # in those attending ae had they had suspcted positive cov in pc
+    suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
+        codelist=covid_primary_care_suspected_codes,
+        between=["ae_attendance_any_discharge_date - 14 days", "ae_attendance_any_discharge_date"],
+        returning=“binary_flag”,
+        return_expectations={
+            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
+            “rate”: “exponential_increase”,
+       
+        },
+    ),
+    
 
     
 
@@ -405,6 +455,18 @@ study = StudyDefinition(
         },
     ),
     
+    # in those attending ae had they had suspcted positive cov in pc
+    any_suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
+        codelist=covid_primary_care_suspected_codes,
+        between=["any_ae_attendance_any_discharge_date - 14 days", "any_ae_attendance_any_discharge_date"],
+        returning=“binary_flag”,
+        return_expectations={
+            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
+            “rate”: “exponential_increase”,
+       
+        },
+    ),
+    
     ######
     #All ae attendance
     ######
@@ -525,6 +587,18 @@ study = StudyDefinition(
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
             "rate": "exponential_increase",
+       
+        },
+    ),
+    
+    # in those attending ae had they had suspcted positive cov in pc
+    all_suspected_covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
+        codelist=covid_primary_care_suspected_codes,
+        between=["all_ae_attendance_any_discharge_date - 14 days", "all_ae_attendance_any_discharge_date"],
+        returning=“binary_flag”,
+        return_expectations={
+            “date”: {“earliest”: “2021-01-01",  “latest” : “2021-02-01"},
+            “rate”: “exponential_increase”,
        
         },
     ),
