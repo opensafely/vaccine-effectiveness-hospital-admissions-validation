@@ -22,9 +22,12 @@ actions:
     needs: [generate_study_population, generate_study_population_descriptives]
     outputs:
       moderately_sensitive:
+        num_patients: output/num_patients.json
         ae_attendance_count_dict: output/num_ae_attendances.json
         hosp_dict: output/emergency_hospitalisation.json
         ae_dict: output/ae.json
+        any_ae_dict: output/ae_any.json
+        all_ae_dict: output/ae_all.json
         discharge_csv: output/discharge_destination.csv
         performance_dict: output/model_performance.json
         sensitivity_dict: output/sensitivity.json

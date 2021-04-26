@@ -107,6 +107,18 @@ study = StudyDefinition(
             "incidence": 0.3,
         },
     ),
+
+    emergency_covid_hospital_admission=patients.admitted_to_hospital(
+        returning="date_admitted",
+        with_these_diagnoses=covid_codes,
+        with_admission_method="21",
+        on_or_after="index_date + 1 day",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
         
     ae_attendance_any_discharge = patients.attended_emergency_care(
         between=["index_date", end_date],
@@ -150,6 +162,17 @@ study = StudyDefinition(
         }
     ),
 
+    ae_attendance_hosp_discharge_date = patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations = {
+            "incidence": 0.5,
+            }
+    ),
+
+
 
     # covid status of those attendance to ae
     ae_attendance_covid_status = patients.attended_emergency_care(
@@ -179,7 +202,7 @@ study = StudyDefinition(
     positive_covid_test_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["ae_attendance_any_discharge_date - 14 days", "ae_attendance_any_discharge_date + 7 days"],
+        between=["ae_attendance_hosp_discharge_date - 14 days", "ae_attendance_any_discharge_date + 7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -192,7 +215,20 @@ study = StudyDefinition(
     positive_covid_test_month_before_ae_attendance = patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
-        between=["ae_attendance_any_discharge_date - 28 days", "ae_attendance_any_discharge_date +7 days"],
+        between=["ae_attendance_hosp_discharge_date - 28 days", "ae_attendance_any_discharge_date +7 days"],
+        returning="binary_flag",
+        return_expectations={
+            "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
+            "rate": "exponential_increase",
+            
+        },
+    ),
+
+    # looks at more historical positive cov test
+    positive_covid_test_week_before_ae_attendance = patients.with_test_result_in_sgss(
+        pathogen="SARS-CoV-2",
+        test_result="positive",
+        between=["ae_attendance_hosp_discharge_date - 7 days", "ae_attendance_any_discharge_date +7 days"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
@@ -204,7 +240,7 @@ study = StudyDefinition(
     # in those attending ae had they had positive cov in pc
     covid_primary_care_before_ae_attendance = patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
-        between=["ae_attendance_any_discharge_date - 14 days", "ae_attendance_any_discharge_date"],
+        between=["ae_attendance_hosp_discharge_date - 14 days", "ae_attendance_any_discharge_date"],
         returning="binary_flag",
         return_expectations={
             "date": {"earliest": "2021-01-01",  "latest" : "2021-02-01"},
