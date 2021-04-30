@@ -64,19 +64,22 @@ study = StudyDefinition(
     ),
     
     high_risk=patients.with_these_clinical_events(
-            high_risk_codes, # note no date limits set
+            on_or_before="index_date",
+            high_risk_codes, 
             find_last_match_in_period = True,
             return_expectations={"incidence": 0.02,},
         ),
     
     moderate_risk=patients.with_these_clinical_events(
-            moderate_risk_codes, # note no date limits set
+            on_or_before="index_date",
+            moderate_risk_codes, 
             find_last_match_in_period = True,
             return_expectations={"incidence": 0.02,},
         ),
     
     low_risk=patients.with_these_clinical_events(
-            low_risk_codes, # note no date limits set
+            on_or_before="index_date",
+            low_risk_codes, 
             find_last_match_in_period = True,
             return_expectations={"incidence": 0.02,},
         ),
@@ -216,7 +219,7 @@ study = StudyDefinition(
 
     
     ae_attendance_with_discharge = patients.attended_emergency_care(
-        between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
+        between=["ae_attendance_any_discharge_date - 1 day", "ae_attendance_any_discharge_date"],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
         find_last_match_in_period=True,
@@ -227,7 +230,7 @@ study = StudyDefinition(
     ),
 
     ae_attendance_hosp_discharge = patients.attended_emergency_care(
-        between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
+        between=["ae_attendance_any_discharge_date - 1 day", "ae_attendance_any_discharge_date"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
@@ -239,7 +242,7 @@ study = StudyDefinition(
 
     
     discharge_destination = patients.attended_emergency_care(
-        between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
+        between=["ae_attendance_any_discharge_date - 1 day", "ae_attendance_any_discharge_date"],
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
@@ -252,7 +255,7 @@ study = StudyDefinition(
 
     # covid status of those attendance to ae
     ae_attendance_covid_status = patients.attended_emergency_care(
-        between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
+        between=["ae_attendance_any_discharge_date - 1 day", "ae_attendance_any_discharge_date"],
         returning="binary_flag",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
@@ -264,7 +267,7 @@ study = StudyDefinition(
     
     #  ae attendance due to respiratory
     ae_attendance_respiratory_status = patients.attended_emergency_care(
-        between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
+        between=["ae_attendance_any_discharge_date - 1 day", "ae_attendance_any_discharge_date"],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -356,7 +359,7 @@ study = StudyDefinition(
 
     
     any_ae_attendance_with_discharge = patients.attended_emergency_care(
-        between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
+        between=["any_ae_attendance_any_discharge_date - 1 day", "any_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
         find_last_match_in_period=True,
@@ -367,7 +370,7 @@ study = StudyDefinition(
     ),
 
     any_ae_attendance_hosp_discharge = patients.attended_emergency_care(
-        between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
+        between=["any_ae_attendance_any_discharge_date - 1 day", "any_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
@@ -379,7 +382,7 @@ study = StudyDefinition(
 
     
     any_discharge_destination = patients.attended_emergency_care(
-        between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
+        between=["any_ae_attendance_any_discharge_date - 1 day", "any_ae_attendance_any_discharge_date"],
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
@@ -392,7 +395,7 @@ study = StudyDefinition(
 
     # covid status of those attendance to ae
     any_ae_attendance_covid_status = patients.attended_emergency_care(
-        between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
+        between=["any_ae_attendance_any_discharge_date - 1 day", "any_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
@@ -404,7 +407,7 @@ study = StudyDefinition(
     
     #  ae attendance due to respiratory
     any_ae_attendance_respiratory_status = patients.attended_emergency_care(
-        between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
+        between=["any_ae_attendance_any_discharge_date - 1 day", "any_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -494,7 +497,7 @@ study = StudyDefinition(
 
     
     all_ae_attendance_with_discharge = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["all_ae_attendance_any_discharge_date - 1 day", "all_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
         find_last_match_in_period=True,
@@ -505,7 +508,7 @@ study = StudyDefinition(
     ),
 
     all_ae_attendance_hosp_discharge = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["all_ae_attendance_any_discharge_date - 1 day", "all_ae_attendance_any_discharge_date"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
@@ -517,7 +520,7 @@ study = StudyDefinition(
 
     
     all_discharge_destination = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["all_ae_attendance_any_discharge_date - 1 day", "all_ae_attendance_any_discharge_date"],
         returning="discharge_destination",
         find_last_match_in_period=True,
         return_expectations={
@@ -530,7 +533,7 @@ study = StudyDefinition(
 
     # covid status of those attendance to ae
     all_ae_attendance_covid_status = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["all_ae_attendance_any_discharge_date - 14 days", "all_ae_attendance_any_discharge_date + 7 days"],
         returning="binary_flag",
         find_last_match_in_period=True,
         with_these_diagnoses=covid_codes_ae,
@@ -542,7 +545,7 @@ study = StudyDefinition(
     
     #  ae attendance due to respiratory
     all_ae_attendance_respiratory_status = patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["all_ae_attendance_any_discharge_date - 14 days", "all_ae_attendance_any_discharge_date + 7 days"],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
