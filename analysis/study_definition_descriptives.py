@@ -64,23 +64,23 @@ study = StudyDefinition(
     ),
     
     high_risk=patients.with_these_clinical_events(
-            on_or_before="index_date",
             high_risk_codes, 
             find_last_match_in_period = True,
+            on_or_before="index_date",
             return_expectations={"incidence": 0.02,},
         ),
     
     moderate_risk=patients.with_these_clinical_events(
-            on_or_before="index_date",
             moderate_risk_codes, 
+            on_or_before="index_date",
             find_last_match_in_period = True,
             return_expectations={"incidence": 0.02,},
         ),
     
     low_risk=patients.with_these_clinical_events(
-            on_or_before="index_date",
             low_risk_codes, 
             find_last_match_in_period = True,
+            on_or_before="index_date",
             return_expectations={"incidence": 0.02,},
         ),
     
