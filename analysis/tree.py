@@ -1,5 +1,5 @@
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import metrics 
 from sklearn import tree
 import pandas as pd
@@ -35,7 +35,7 @@ clf = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=params, scorin
 clf.fit(X_train, y_train)
 
 
-clf = DecisionTreeClassifier(max_depth=clf.best_params['max_depth'], min_samples_split=clf.best_params['min_samples_split'], min_samples_leaf=clf.best_params['min_samples_leaf'])
+clf = DecisionTreeClassifier(max_depth=clf.best_params_['max_depth'], min_samples_split=clf.best_params_['min_samples_split'], min_samples_leaf=clf.best_params_['min_samples_leaf'])
 
 
 clf= clf.fit(X_train,y_train)
