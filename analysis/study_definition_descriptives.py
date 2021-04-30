@@ -196,7 +196,7 @@ study = StudyDefinition(
     ######
     ae_attendance_any_discharge = patients.attended_emergency_care(
         between=["emergency_covid_hospital_admission - 1 day", "emergency_covid_hospital_admission"],
-        returning="date_arrived",
+        returning="binary_flag",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
         return_expectations = {
@@ -336,7 +336,7 @@ study = StudyDefinition(
     ######
     any_ae_attendance_any_discharge = patients.attended_emergency_care(
         between=["emergency_hospital_admission - 1 day", "emergency_hospital_admission"],
-        returning="date_arrived",
+        returning="binary_flag",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
         return_expectations = {
@@ -474,7 +474,7 @@ study = StudyDefinition(
     ######
     all_ae_attendance_any_discharge = patients.attended_emergency_care(
         between=["index_date", end_date],
-        returning="date_arrived",
+        returning="binary_flag",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
         return_expectations = {
