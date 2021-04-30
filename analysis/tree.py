@@ -39,6 +39,11 @@ clf = DecisionTreeClassifier(max_depth=clf.best_params_['max_depth'], min_sample
 
 
 clf= clf.fit(X_train,y_train)
+feature_importance_array = clf.feature_importances_
+# define data
+data = np.asarray([feature_importance_array])
+np.savetxt('output/feature_importance.csv', data, delimiter=',')
+
 y_pred = clf.predict(X_test)
 
 

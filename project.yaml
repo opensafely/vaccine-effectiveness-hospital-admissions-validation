@@ -40,6 +40,7 @@ actions:
       moderately_sensitive:
         tree: output/tree.png
         results: output/results_df.csv
+        fi: output/feature_importance.csv
         
   generate_notebook:
     run: jupyter:latest jupyter nbconvert /workspace/analysis/results.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
