@@ -6,17 +6,59 @@
       "downloaded_at": "2021-03-04 14:35:40.636416Z",
       "sha": "124db6929439379b7dacd55ba26ae4f2ed9370bc"
     },
-    "opensafely-covid-ae-diagnosis-codes.csv": {
-      "id": "opensafely/covid-ae-diagnosis-codes/0dd38781",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-ae-diagnosis-codes/0dd38781/",
-      "downloaded_at": "2022-01-27 10:32:53.968372Z",
-      "sha": "777134c2706b6fe7a56265ff40fec585a6579b05"
+    "opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-probable-covid-positive-test/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-positive-test/2020-07-16/",
+      "downloaded_at": "2021-03-04 14:35:40.728024Z",
+      "sha": "563b536aaf850da011233653e91e10030a5bc15f"
     },
-    "user-Louis-respiratory-related-ae.csv": {
-      "id": "user/Louis/respiratory-related-ae/4a555f7d",
-      "url": "https://codelists.opensafely.org/codelist/user/Louis/respiratory-related-ae/4a555f7d/",
-      "downloaded_at": "2022-01-27 10:46:51.311325Z",
-      "sha": "d151edf20098013b6572e1114835d78da6e1f483"
+    "opensafely-covid-identification-in-primary-care-probable-covid-clinical-code.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/2020-07-16/",
+      "downloaded_at": "2021-03-04 14:35:40.832045Z",
+      "sha": "5de38f993b166d6ef97c6ea822635317a6c7ae85"
+    },
+    "opensafely-covid-identification-in-primary-care-probable-covid-sequelae.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-probable-covid-sequelae/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-sequelae/2020-07-16/",
+      "downloaded_at": "2021-03-04 14:35:40.942010Z",
+      "sha": "38dc0c0a34e2b8b376ba72819923f442c30b4946"
+    },
+    "opensafely-covid-identification-in-primary-care-helper-111-suspected.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-helper-111-suspected/2020-06-28",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-helper-111-suspected/2020-06-28/",
+      "downloaded_at": "2021-04-26 13:23:34.675327Z",
+      "sha": "60fa8f9d8bfb01e0722104f0642dd3790022644d"
+    },
+    "opensafely-covid-identification-in-primary-care-suspected-covid-advice.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-suspected-covid-advice/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-suspected-covid-advice/2020-07-16/",
+      "downloaded_at": "2021-04-26 13:23:35.092209Z",
+      "sha": "b898d52ea318da16cbeea0ba2d2a1635b3673f90"
+    },
+    "opensafely-covid-identification-in-primary-care-suspected-covid-had-test.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-suspected-covid-had-test/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-suspected-covid-had-test/2020-07-16/",
+      "downloaded_at": "2021-04-26 13:23:35.252232Z",
+      "sha": "c540d48e1d3ecce3d56f090f56bbe6d87e6fb459"
+    },
+    "opensafely-covid-identification-in-primary-care-suspected-covid-isolation-code.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-suspected-covid-isolation-code/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-suspected-covid-isolation-code/2020-07-16/",
+      "downloaded_at": "2021-04-26 13:23:36.169185Z",
+      "sha": "36bba5f68368ff788ac243b5912df5db96c2b99c"
+    },
+    "opensafely-covid-identification-in-primary-care-suspected-covid-nonspecific-clinical-assessment.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-suspected-covid-nonspecific-clinical-assessment/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-suspected-covid-nonspecific-clinical-assessment/2020-07-16/",
+      "downloaded_at": "2021-04-26 13:23:36.361073Z",
+      "sha": "99d10fc347d107a8a7c490180ed91d39bd2e1275"
+    },
+    "opensafely-covid-identification-in-primary-care-suspected-covid-suspected-codes.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-suspected-covid-suspected-codes/2020-07-16",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-suspected-covid-suspected-codes/2020-07-16/",
+      "downloaded_at": "2021-04-26 13:23:36.735534Z",
+      "sha": "cabe593830301e976654435e2d662d9e68fa9e66"
     }
   }
 }
