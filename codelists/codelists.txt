@@ -1,10 +1,2 @@
 opensafely/covid-identification/2020-06-03
-opensafely/covid-identification-in-primary-care-probable-covid-positive-test/2020-07-16
-opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/2020-07-16
-opensafely/covid-identification-in-primary-care-probable-covid-sequelae/2020-07-16
-opensafely/covid-identification-in-primary-care-helper-111-suspected/2020-06-28
-opensafely/covid-identification-in-primary-care-suspected-covid-advice/2020-07-16
-opensafely/covid-identification-in-primary-care-suspected-covid-had-test/2020-07-16
-opensafely/covid-identification-in-primary-care-suspected-covid-isolation-code/2020-07-16
-opensafely/covid-identification-in-primary-care-suspected-covid-nonspecific-clinical-assessment/2020-07-16
-opensafely/covid-identification-in-primary-care-suspected-covid-suspected-codes/2020-07-16
+opensafely/covid-ae-diagnosis-codes/0dd38781
