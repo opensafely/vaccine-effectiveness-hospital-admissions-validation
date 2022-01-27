@@ -31,16 +31,6 @@ hosp_discharge_list = [str(306706006), str(1066331000000109), str(10663910000001
 
 ae_discharge_list = [str(key) for (key, value) in ae_discharge_dict.items()]
 
-diagnosis_codes = {
-    "uppper_resp_infection": str(54150009),
-    "lower_resp_infection": str(50417007),
-    "pneumonia": str(233604007),
-    "sars": str(398447004),
-    "resp_failure": str(409622000),
-}
-
-respiratory_codes = [value for (key, value) in diagnosis_codes.items()]
-
 
 study = StudyDefinition(
     index_date=start_date,
@@ -229,7 +219,7 @@ study = StudyDefinition(
         returning="binary_flag",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
-        with_these_diagnoses=respiratory_codes,
+        with_these_diagnoses=respiratory_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
     # in those attending ae had they had recent positiv cov test
