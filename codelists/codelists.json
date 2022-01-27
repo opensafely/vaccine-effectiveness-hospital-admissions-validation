@@ -11,6 +11,12 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/covid-ae-diagnosis-codes/0dd38781/",
       "downloaded_at": "2022-01-27 10:32:53.968372Z",
       "sha": "777134c2706b6fe7a56265ff40fec585a6579b05"
+    },
+    "user-Louis-respiratory-related-ae.csv": {
+      "id": "user/Louis/respiratory-related-ae/4a555f7d",
+      "url": "https://codelists.opensafely.org/codelist/user/Louis/respiratory-related-ae/4a555f7d/",
+      "downloaded_at": "2022-01-27 10:46:51.311325Z",
+      "sha": "d151edf20098013b6572e1114835d78da6e1f483"
     }
   }
 }
