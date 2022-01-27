@@ -3,8 +3,8 @@ from cohortextractor import StudyDefinition, patients, codelist, codelist_from_c
 # Import Codelists
 from codelists import *
 
-start_date = "2020-09-01"
-end_date = "2021-01-01"
+start_date = "2021-06-01"
+end_date = "2021-10-01"
 
 ae_discharge_dict = {
     1066341000000100: "Ambulatory Emergency Care",
