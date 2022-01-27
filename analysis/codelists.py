@@ -1,10 +1,4 @@
-
-from cohortextractor import (
-    codelist,
-    codelist_from_csv,
-    combine_codelists
-)
-
+from cohortextractor import codelist, codelist_from_csv, combine_codelists
 
 
 covid_codes = codelist_from_csv(
@@ -14,9 +8,15 @@ covid_codes = codelist_from_csv(
 )
 
 covid_codes_ae = codelist_from_csv(
-    "analysis/covid_codes.csv",
+    "codelists/opensafely-covid-ae-diagnosis-codes.csv",
     system="snomed",
-    column="snomed_id",
+    column="code",
+)
+
+respiratory_codes = codelist_from_csv(
+    "codelists/user-Louis-respiratory-related-ae.csv",
+    system="snomed",
+    column="code",
 )
 
 
@@ -38,7 +38,11 @@ covid_primary_care_sequalae = codelist_from_csv(
     column="CTV3ID",
 )
 
-covid_primary_care_codes = combine_codelists(covid_primary_care_positive_test, covid_primary_care_code, covid_primary_care_sequalae)
+covid_primary_care_codes = combine_codelists(
+    covid_primary_care_positive_test,
+    covid_primary_care_code,
+    covid_primary_care_sequalae,
+)
 
 covid_primary_care_111_suspected = codelist_from_csv(
     "codelists/opensafely-covid-identification-in-primary-care-helper-111-suspected.csv",
@@ -76,14 +80,18 @@ covid_primary_care_codes_suspected = codelist_from_csv(
     column="CTV3ID",
 )
 
-covid_primary_care_suspected_codes = combine_codelists(covid_primary_care_111_suspected, covid_primary_care_advice_suspected, covid_primary_care_codes_suspected, covid_primary_care_isolation_suspected, covid_primary_care_nonspecific_suspected, covid_primary_care_had_test_suspected)
+covid_primary_care_suspected_codes = combine_codelists(
+    covid_primary_care_111_suspected,
+    covid_primary_care_advice_suspected,
+    covid_primary_care_codes_suspected,
+    covid_primary_care_isolation_suspected,
+    covid_primary_care_nonspecific_suspected,
+    covid_primary_care_had_test_suspected,
+)
 
 
-high_risk_codes = codelist(
-    ['1300561000000107'], system="snomed")
+high_risk_codes = codelist(["1300561000000107"], system="snomed")
 
-moderate_risk_codes = codelist(
-    ['1300571000000100'], system="snomed")
+moderate_risk_codes = codelist(["1300571000000100"], system="snomed")
 
-low_risk_codes = codelist(
-    ['1300591000000101'], system="snomed")
+low_risk_codes = codelist(["1300591000000101"], system="snomed")

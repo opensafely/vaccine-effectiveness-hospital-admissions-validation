@@ -1,4 +1,6 @@
 opensafely/covid-identification/2020-06-03
+opensafely/covid-ae-diagnosis-codes/0dd38781
+user/Louis/respiratory-related-ae/4a555f7d
 opensafely/covid-identification-in-primary-care-probable-covid-positive-test/2020-07-16
 opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/2020-07-16
 opensafely/covid-identification-in-primary-care-probable-covid-sequelae/2020-07-16
