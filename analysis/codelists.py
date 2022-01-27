@@ -1,7 +1,7 @@
 from cohortextractor import codelist, codelist_from_csv, combine_codelists
 
 
-covid_codes = codelist_from_csv(
+covid_codes_hospital = codelist_from_csv(
     "codelists/opensafely-covid-identification.csv",
     system="icd10",
     column="icd10_code",
