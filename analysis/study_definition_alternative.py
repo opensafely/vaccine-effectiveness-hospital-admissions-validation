@@ -333,7 +333,7 @@ study = StudyDefinition(
     ae_attendance_any_cause_with_discharge=patients.attended_emergency_care(
         between=[
             "ae_attendance_any_cause_date",
-            "ae_attendance_any_cause_date + 1 day",
+            "ae_attendance_any_cause_date",
         ],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
@@ -343,7 +343,7 @@ study = StudyDefinition(
     ae_attendance_any_cause_hosp_discharge=patients.attended_emergency_care(
         between=[
             "ae_attendance_any_cause_date",
-            "ae_attendance_any_cause_date + 1 day",
+            "ae_attendance_any_cause_date",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -354,7 +354,7 @@ study = StudyDefinition(
     ae_attendance_covid_status=patients.attended_emergency_care(
         between=[
             "ae_attendance_any_cause_date",
-            "ae_attendance_any_cause_date + 1 day",
+            "ae_attendance_any_cause_date",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -365,7 +365,7 @@ study = StudyDefinition(
     ae_attendance_respiratory_status=patients.attended_emergency_care(
         between=[
             "ae_attendance_any_cause_date",
-            "ae_attendance_any_cause_date + 1 day",
+            "ae_attendance_any_cause_date",
         ],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
