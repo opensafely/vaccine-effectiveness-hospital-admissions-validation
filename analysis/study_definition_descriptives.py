@@ -695,8 +695,8 @@ study = StudyDefinition(
     # covid status of those attendance to ae
     all_ae_attendance_covid_status=patients.attended_emergency_care(
         between=[
-            "all_ae_attendance_any_discharge_date - 14 days",
-            "all_ae_attendance_any_discharge_date + 7 days",
+            "all_ae_attendance_any_discharge_date",
+            "all_ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -706,8 +706,8 @@ study = StudyDefinition(
     #  ae attendance due to respiratory
     all_ae_attendance_respiratory_status=patients.attended_emergency_care(
         between=[
-            "all_ae_attendance_any_discharge_date - 14 days",
-            "all_ae_attendance_any_discharge_date + 7 days",
+            "all_ae_attendance_any_discharge_date",
+            "all_ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
