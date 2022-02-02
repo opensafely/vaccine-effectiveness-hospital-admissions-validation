@@ -361,8 +361,12 @@ discharge_destination_df.to_csv("output/discharge_destination.csv")
 # models
 df = pd.read_csv("output/input.csv")
 
-positive_covid_patients_sus = df[df["emergency_primary_covid_hospital_admission"].notna()]
-negative_covid_patients_sus = df[~df["emergency_primary_covid_hospital_admission"].notna()]
+positive_covid_patients_sus = df[
+    df["emergency_primary_covid_hospital_admission"].notna()
+]
+negative_covid_patients_sus = df[
+    ~df["emergency_primary_covid_hospital_admission"].notna()
+]
 
 # model_a
 
@@ -375,7 +379,7 @@ model_a_patients_positive = set(list(positive_covid_patients_a["patient_id"]))
 
 sus_patients_negative = set(list(negative_covid_patients_sus["patient_id"]))
 model_a_patients_negative = set(list(negative_covid_patients_a["patient_id"]))
-
+print(len(set(sus_patients_positive)))
 sus_pos_ecds_pos = len(
     list(set(sus_patients_positive) & set(model_a_patients_positive))
 )
@@ -414,6 +418,7 @@ output = pd.DataFrame(
     columns=["SUS-positive", "SUS-negative", "Total"],
     index=["ECDS-positive", "ECDS-negative", "Total"],
 )
+
 output.to_csv("output/model_a.csv")
 
 # model_b
@@ -432,7 +437,6 @@ negative_covid_patients_b = df[
 
 model_b_patients_positive = set(list(positive_covid_patients_b["patient_id"]))
 model_b_patients_negative = set(list(negative_covid_patients_b["patient_id"]))
-
 
 sus_pos_ecds_pos = len(
     list(set(sus_patients_positive) & set(model_b_patients_positive))
@@ -472,6 +476,7 @@ output = pd.DataFrame(
     columns=["SUS-positive", "SUS-negative", "Total"],
     index=["ECDS-positive", "ECDS-negative", "Total"],
 )
+
 output.to_csv("output/model_b.csv")
 
 # model_c
@@ -491,18 +496,18 @@ negative_covid_patients_c = df[
     == 0
     | (
         (df["ae_attendance_hosp_discharge"] == 1)
-        & (df["ae_attendance_covid_status"] == 0)
-        & (
-            (df["positive_covid_test_before_ae_attendance"] == 0)
-            | (df["covid_primary_care_before_ae_attendance"] == 0)
+        & ~(
+            (df["ae_attendance_covid_status"] == 1)
+            | (
+                (df["ae_attendance_respiratory_status"] == 1)
+                & (df["positive_covid_test_before_ae_attendance"] == 1)
+            )
         )
     )
 ]
 
-
 model_c_patients_positive = set(list(positive_covid_patients_c["patient_id"]))
 model_c_patients_negative = set(list(negative_covid_patients_c["patient_id"]))
-
 
 sus_pos_ecds_pos = len(
     list(set(sus_patients_positive) & set(model_c_patients_positive))
@@ -542,6 +547,7 @@ output = pd.DataFrame(
     columns=["SUS-positive", "SUS-negative", "Total"],
     index=["ECDS-positive", "ECDS-negative", "Total"],
 )
+
 output.to_csv("output/model_c.csv")
 
 venn(
