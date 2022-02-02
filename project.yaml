@@ -37,6 +37,7 @@ actions:
         performance_dict: output/model_performance_updated.json
         sensitivity_dict: output/sensitivity.json
         model_csvs: output/model_*.csv
+        venn: output/venn.jpeg
 
   generate_notebook:
     run: jupyter:latest jupyter nbconvert /workspace/analysis/results.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input

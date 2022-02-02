@@ -394,8 +394,8 @@ study = StudyDefinition(
     ),
     ae_attendance_with_discharge_prim=patients.attended_emergency_care(
         between=[
-            "ae_attendance_any_discharge_date",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
@@ -404,8 +404,8 @@ study = StudyDefinition(
     ),
     ae_attendance_hosp_discharge_prim=patients.attended_emergency_care(
         between=[
-            "ae_attendance_any_discharge_date",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -414,8 +414,8 @@ study = StudyDefinition(
     ),
     discharge_destination_prim=patients.attended_emergency_care(
         between=[
-            "ae_attendance_any_discharge_date",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="discharge_destination",
         find_last_match_in_period=True,
@@ -427,8 +427,8 @@ study = StudyDefinition(
     # covid status of those attendance to ae
     ae_attendance_covid_status_prim=patients.attended_emergency_care(
         between=[
-            "ae_attendance_any_discharge_date",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -438,8 +438,8 @@ study = StudyDefinition(
     #  ae attendance due to respiratory
     ae_attendance_respiratory_status_prim=patients.attended_emergency_care(
         between=[
-            "ae_attendance_any_discharge_date",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
@@ -452,8 +452,8 @@ study = StudyDefinition(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_any_discharge_date - 14 days",
-            "ae_attendance_any_discharge_date + 7 days",
+            "ae_attendance_any_discharge_date_prim - 14 days",
+            "ae_attendance_any_discharge_date_prim + 7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -466,8 +466,8 @@ study = StudyDefinition(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_any_discharge_date - 28 days",
-            "ae_attendance_any_discharge_date + 7 days",
+            "ae_attendance_any_discharge_date_prim - 28 days",
+            "ae_attendance_any_discharge_date_prim + 7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -479,8 +479,8 @@ study = StudyDefinition(
     covid_primary_care_before_ae_attendance_prim=patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
         between=[
-            "ae_attendance_any_discharge_date - 14 days",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim - 14 days",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         return_expectations={
@@ -491,8 +491,8 @@ study = StudyDefinition(
     suspected_covid_primary_care_before_ae_attendance_prim=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
-            "ae_attendance_any_discharge_date - 14 days",
-            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date_prim - 14 days",
+            "ae_attendance_any_discharge_date_prim",
         ],
         returning="binary_flag",
         return_expectations={

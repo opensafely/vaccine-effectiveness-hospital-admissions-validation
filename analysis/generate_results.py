@@ -3,6 +3,8 @@ import numpy as np
 from collections import Counter
 import math
 import json
+from venn import venn
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("output/input_descriptives.csv")
 
@@ -542,6 +544,13 @@ output = pd.DataFrame(
 )
 output.to_csv("output/model_c.csv")
 
+venn(
+    {
+        "Satisfying A&E attendance": model_c_patients_positive,
+        "Emergency primary COVID-19 hospital admission": sus_patients_positive,
+    }
+)
+plt.savefig("output/venn.jpeg")
 
 # dictionary of model results
 
@@ -549,23 +558,23 @@ performance_dict = {
     "A": {
         "sensitivity": round(sensitivity_a, 2),
         "specificity": round(specificity_a, 2),
-        "ppv": round(PPV_a),
-        "npv": round(NPV_a),
-        "mcc": round(MCC_a),
+        "ppv": round(PPV_a, 2),
+        "npv": round(NPV_a, 2),
+        "mcc": round(MCC_a, 2),
     },
     "B": {
-        "sensitivity": round(sensitivity_b),
-        "specificity": round(specificity_b),
-        "ppv": round(PPV_b),
-        "npv": round(NPV_b),
-        "mcc": round(MCC_b),
+        "sensitivity": round(sensitivity_b, 2),
+        "specificity": round(specificity_b, 2),
+        "ppv": round(PPV_b, 2),
+        "npv": round(NPV_b, 2),
+        "mcc": round(MCC_b, 2),
     },
     "C": {
-        "sensitivity": round(sensitivity_c),
-        "specificity": round(specificity_c),
-        "ppv": round(PPV_c),
-        "npv": round(NPV_c),
-        "mcc": round(MCC_c),
+        "sensitivity": round(sensitivity_c, 2),
+        "specificity": round(specificity_c, 2),
+        "ppv": round(PPV_c, 2),
+        "npv": round(NPV_c, 2),
+        "mcc": round(MCC_c, 2),
     },
 }
 
