@@ -547,29 +547,29 @@ output.to_csv("output/model_c.csv")
 
 performance_dict = {
     "A": {
-        "sensitivity": sensitivity_a,
-        "specificity": specificity_a,
-        "ppv": PPV_a,
-        "npv": NPV_a,
-        "mcc": MCC_a,
+        "sensitivity": round(sensitivity_a, 2),
+        "specificity": round(specificity_a, 2),
+        "ppv": round(PPV_a),
+        "npv": round(NPV_a),
+        "mcc": round(MCC_a),
     },
     "B": {
-        "sensitivity": sensitivity_b,
-        "specificity": specificity_b,
-        "ppv": PPV_b,
-        "npv": NPV_b,
-        "mcc": MCC_b,
+        "sensitivity": round(sensitivity_b),
+        "specificity": round(specificity_b),
+        "ppv": round(PPV_b),
+        "npv": round(NPV_b),
+        "mcc": round(MCC_b),
     },
     "C": {
-        "sensitivity": sensitivity_c,
-        "specificity": specificity_c,
-        "ppv": PPV_c,
-        "npv": NPV_c,
-        "mcc": MCC_c,
+        "sensitivity": round(sensitivity_c),
+        "specificity": round(specificity_c),
+        "ppv": round(PPV_c),
+        "npv": round(NPV_c),
+        "mcc": round(MCC_c),
     },
 }
 
-with open("output/model_performance.json", "w") as fp:
+with open("output/model_performance_updated.json", "w") as fp:
     json.dump(performance_dict, fp)
 
 # sensitivity

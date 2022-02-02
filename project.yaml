@@ -34,7 +34,7 @@ actions:
         any_ae_dict: output/ae_any.json
         all_ae_dict: output/ae_all.json
         discharge_csv: output/discharge_destination.csv
-        performance_dict: output/model_performance.json
+        performance_dict: output/model_performance_updated.json
         sensitivity_dict: output/sensitivity.json
         model_csvs: output/model_*.csv
 
