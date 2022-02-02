@@ -3,6 +3,8 @@ import numpy as np
 from collections import Counter
 import math
 import json
+from venn import venn
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("output/input_descriptives.csv")
 
@@ -542,6 +544,13 @@ output = pd.DataFrame(
 )
 output.to_csv("output/model_c.csv")
 
+venn(
+    {
+        "Satisfying A&E attendance": model_c_patients_positive,
+        "Emergency primary COVID-19 hospital admission": sus_patients_positive,
+    }
+)
+plt.savefig("output/venn.jpeg")
 
 # dictionary of model results
 
