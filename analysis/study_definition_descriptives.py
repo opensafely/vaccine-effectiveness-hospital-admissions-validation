@@ -231,7 +231,7 @@ study = StudyDefinition(
     ######
     ae_attendance_any_discharge=patients.attended_emergency_care(
         between=[
-            "emergency_covid_hospital_admission",
+            "emergency_covid_hospital_admission - 7 days",
             "emergency_covid_hospital_admission",
         ],
         returning="binary_flag",
@@ -244,7 +244,7 @@ study = StudyDefinition(
     ),
     ae_attendance_any_discharge_date=patients.attended_emergency_care(
         between=[
-            "emergency_covid_hospital_admission",
+            "emergency_covid_hospital_admission - 7 days",
             "emergency_covid_hospital_admission",
         ],
         returning="date_arrived",
@@ -368,7 +368,7 @@ study = StudyDefinition(
     ######
     ae_attendance_any_discharge_prim=patients.attended_emergency_care(
         between=[
-            "emergency_primary_covid_hospital_admission",
+            "emergency_primary_covid_hospital_admission - 7 days",
             "emergency_primary_covid_hospital_admission",
         ],
         returning="binary_flag",
@@ -381,7 +381,7 @@ study = StudyDefinition(
     ),
     ae_attendance_any_discharge_date_prim=patients.attended_emergency_care(
         between=[
-            "emergency_primary_covid_hospital_admission",
+            "emergency_primary_covid_hospital_admission - 7 days",
             "emergency_primary_covid_hospital_admission",
         ],
         returning="date_arrived",
@@ -505,7 +505,7 @@ study = StudyDefinition(
     ######
     any_ae_attendance_any_discharge=patients.attended_emergency_care(
         between=[
-            "emergency_hospital_admission",
+            "emergency_hospital_admission - 7 days",
             "emergency_hospital_admission",
         ],
         returning="binary_flag",
