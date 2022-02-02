@@ -361,8 +361,8 @@ discharge_destination_df.to_csv("output/discharge_destination.csv")
 # models
 df = pd.read_csv("output/input.csv")
 
-positive_covid_patients_sus = df[df["emergency_covid_hospital_admission"].notna()]
-negative_covid_patients_sus = df[~df["emergency_covid_hospital_admission"].notna()]
+positive_covid_patients_sus = df[df["emergency_primary_covid_hospital_admission"].notna()]
+negative_covid_patients_sus = df[~df["emergency_primary_covid_hospital_admission"].notna()]
 
 # model_a
 
