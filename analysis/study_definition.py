@@ -219,21 +219,30 @@ study = StudyDefinition(
         },
     ),
     ae_attendance_with_discharge=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=[
+            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date",
+        ],
         returning="binary_flag",
         discharged_to=ae_discharge_list,
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.4},
     ),
     ae_attendance_hosp_discharge=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=[
+            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date",
+        ],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
         return_expectations={"incidence": 0.4},
     ),
     ae_attendance_hosp_discharge_date=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=[
+            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date",
+        ],
         returning="date_arrived",
         find_last_match_in_period=True,
         date_format="YYYY-MM-DD",
@@ -244,8 +253,8 @@ study = StudyDefinition(
     # covid status of those attendance to ae
     ae_attendance_covid_status=patients.attended_emergency_care(
         between=[
-            "ae_attendance_hosp_discharge_date",
-            "ae_attendance_hosp_discharge_date",
+            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         find_last_match_in_period=True,
@@ -255,8 +264,8 @@ study = StudyDefinition(
     #  ae attendance due to respiratory
     ae_attendance_respiratory_status=patients.attended_emergency_care(
         between=[
-            "ae_attendance_hosp_discharge_date",
-            "ae_attendance_hosp_discharge_date",
+            "ae_attendance_any_discharge_date",
+            "ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         date_format="YYYY-MM-DD",
@@ -269,8 +278,8 @@ study = StudyDefinition(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_hosp_discharge_date - 14 days",
-            "ae_attendance_hosp_discharge_date + 7 days",
+            "ae_attendance_any_discharge_date- 14 days",
+            "ae_attendance_any_discharge_date + 7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -283,8 +292,8 @@ study = StudyDefinition(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_hosp_discharge_date - 28 days",
-            "ae_attendance_hosp_discharge_date +7 days",
+            "ae_attendance_any_discharge_date - 28 days",
+            "ae_attendance_any_discharge_date +7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -297,8 +306,8 @@ study = StudyDefinition(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_hosp_discharge_date - 7 days",
-            "ae_attendance_hosp_discharge_date +7 days",
+            "ae_attendance_any_discharge_date - 7 days",
+            "ae_attendance_any_discharge_date +7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -310,8 +319,8 @@ study = StudyDefinition(
     covid_primary_care_before_ae_attendance=patients.with_these_clinical_events(
         codelist=covid_primary_care_codes,
         between=[
-            "ae_attendance_hosp_discharge_date - 14 days",
-            "ae_attendance_hosp_discharge_date",
+            "ae_attendance_any_discharge_date - 14 days",
+            "ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         return_expectations={
@@ -322,8 +331,8 @@ study = StudyDefinition(
     suspected_covid_primary_care_before_ae_attendance=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
-            "ae_attendance_hosp_discharge_date - 14 days",
-            "ae_attendance_hosp_discharge_date",
+            "ae_attendance_any_discharge_date - 14 days",
+            "ae_attendance_any_discharge_date",
         ],
         returning="binary_flag",
         return_expectations={
