@@ -97,4 +97,104 @@ study = StudyDefinition(
         between=["index_date + 1 day", end_date],
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
+    ae_attendance_first_date=patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+            "rate": "exponential_increase",
+        },
+    ),
+    ae_attendance_first_covid_status=patients.attended_emergency_care(
+        between=[
+            "ae_attendance_first_date",
+            "ae_attendance_first_date",
+        ],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations={"incidence": 0.9},
+    ),
+    ae_attendance_second_date=patients.attended_emergency_care(
+        between=["ae_attendance_first_date + 1 day", end_date],
+        returning="date_arrived",
+        find_first_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations={
+            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+            "rate": "exponential_increase",
+        },
+    ),
+    ae_attendance_second_covid_status=patients.attended_emergency_care(
+        between=[
+            "ae_attendance_second_date",
+            "ae_attendance_second_date",
+        ],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations={"incidence": 0.9},
+    ),
+    ae_attendance_third_date=patients.attended_emergency_care(
+        between=["ae_attendance_second_date + 1 day", end_date],
+        returning="date_arrived",
+        find_first_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations={
+            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+            "rate": "exponential_increase",
+        },
+    ),
+    ae_attendance_third_covid_status=patients.attended_emergency_care(
+        between=[
+            "ae_attendance_third_date",
+            "ae_attendance_third_date",
+        ],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations={"incidence": 0.9},
+    ),
+    ae_attendance_fourth_date=patients.attended_emergency_care(
+        between=["ae_attendance_third_date + 1 day", end_date],
+        returning="date_arrived",
+        find_first_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations={
+            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+            "rate": "exponential_increase",
+        },
+    ),
+    ae_attendance_fourth_covid_status=patients.attended_emergency_care(
+        between=[
+            "ae_attendance_fourth_date",
+            "ae_attendance_fourth_date",
+        ],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations={"incidence": 0.9},
+    ),
+    ae_attendance_fifth_date=patients.attended_emergency_care(
+        between=["ae_attendance_fourth_date + 1 day", end_date],
+        returning="date_arrived",
+        find_first_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        return_expectations={
+            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+            "rate": "exponential_increase",
+        },
+    ),
+    ae_attendance_fifth_covid_status=patients.attended_emergency_care(
+        between=[
+            "ae_attendance_fifth_date",
+            "ae_attendance_fifth_date",
+        ],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        with_these_diagnoses=covid_codes_ae,
+        return_expectations={"incidence": 0.9},
+    ),
 )
