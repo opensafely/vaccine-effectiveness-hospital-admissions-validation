@@ -73,7 +73,7 @@ study = StudyDefinition(
         ),
     ),
     hospital_admission=patients.admitted_to_hospital(
-        returning="date_admitted",
+        returning="binary_flag",
         between=["index_date + 1 day", end_date],
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -90,6 +90,11 @@ study = StudyDefinition(
     ae_attendance_count=patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="number_of_matches_in_period",
+        return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
+    ),
+    hospital_admission_count=patients.admitted_to_hospital(
+        returning="number_of_matches_in_period",
+        between=["index_date + 1 day", end_date],
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
 )
