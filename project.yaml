@@ -4,6 +4,19 @@ expectations:
   population_size: 10000
 
 actions:
+  generate_study_population_ae:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ae
+    outputs:
+      highly_sensitive:
+        cohort: output/input_ae.csv
+
+  generate_ae_count:
+    run: python:latest python analysis/ae_count.py
+    needs: [generate_study_population_ae]
+    outputs:
+      moderately_sensitive:
+        count: output/ae_count.json
+
   generate_study_population_descriptives:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_descriptives
     outputs:
