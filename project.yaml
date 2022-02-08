@@ -16,6 +16,7 @@ actions:
     outputs:
       moderately_sensitive:
         count: output/ae_count.json
+        hospital_count: output/hospital_admission_count.json
 
   generate_study_population_descriptives:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_descriptives
