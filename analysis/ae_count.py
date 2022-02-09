@@ -38,6 +38,18 @@ for key, value in hospital_count.items():
 with open("output/hospital_admission_count.json", "w") as fp:
     json.dump(hospital_count_stripped, fp)
 
+emergency_hospital_count = Counter(df["emergency_hospital_admission_count"])
+emergency_hospital_count_stripped = {"5+": 0}
+for key, value in emergency_hospital_count.items():
+    if int(key) < 5:
+        emergency_hospital_count_stripped[key] = value
+
+    else:
+        emergency_hospital_count_stripped["5+"] += value
+
+with open("output/emergency_hospital_admission_count.json", "w") as fp:
+    json.dump(emergency_hospital_count_stripped, fp)
+
 
 df["between_1_2"] = (
     df["ae_attendance_second_date"] - df["ae_attendance_first_date"]
