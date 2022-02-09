@@ -41,16 +41,16 @@ with open("output/hospital_admission_count.json", "w") as fp:
 
 df["between_1_2"] = (
     df["ae_attendance_second_date"] - df["ae_attendance_first_date"]
-).days
+).dt.days
 df["between_2_3"] = (
     df["ae_attendance_third_date"] - df["ae_attendance_second_date"]
-).days
+).dt.days
 df["between_3_4"] = (
     df["ae_attendance_fourth_date"] - df["ae_attendance_third_date"]
-).days
+).dt.days
 df["between_4_5"] = (
     df["ae_attendance_fifth_date"] - df["ae_attendance_fourth_date"]
-).days
+).dt.days
 
 same = len(
     df.loc[
