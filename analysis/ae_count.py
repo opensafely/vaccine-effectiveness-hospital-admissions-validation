@@ -39,10 +39,18 @@ with open("output/hospital_admission_count.json", "w") as fp:
     json.dump(hospital_count_stripped, fp)
 
 
-df["between_1_2"] = df["ae_attendance_second_date"] - df["ae_attendance_first_date"]
-df["between_2_3"] = df["ae_attendance_third_date"] - df["ae_attendance_second_date"]
-df["between_3_4"] = df["ae_attendance_fourth_date"] - df["ae_attendance_third_date"]
-df["between_4_5"] = df["ae_attendance_fifth_date"] - df["ae_attendance_fourth_date"]
+df["between_1_2"] = (
+    df["ae_attendance_second_date"] - df["ae_attendance_first_date"]
+).days
+df["between_2_3"] = (
+    df["ae_attendance_third_date"] - df["ae_attendance_second_date"]
+).days
+df["between_3_4"] = (
+    df["ae_attendance_fourth_date"] - df["ae_attendance_third_date"]
+).days
+df["between_4_5"] = (
+    df["ae_attendance_fifth_date"] - df["ae_attendance_fourth_date"]
+).days
 
 same = len(
     df.loc[
