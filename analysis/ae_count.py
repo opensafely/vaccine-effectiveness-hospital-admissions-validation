@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import json
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -42,16 +43,44 @@ df["between_1_2"] = df["ae_attendance_second_date"] - df["ae_attendance_first_da
 df["between_2_3"] = df["ae_attendance_third_date"] - df["ae_attendance_second_date"]
 df["between_3_4"] = df["ae_attendance_fourth_date"] - df["ae_attendance_third_date"]
 df["between_4_5"] = df["ae_attendance_fifth_date"] - df["ae_attendance_fourth_date"]
+
 same = len(
     df.loc[
-        df["ae_attendance_first_covid_status"]
-        == df["ae_attendance_second_covid_status"],
+        (df["ae_attendance_first_covid_status"] == 1)
+        & (df["ae_attendance_second_covid_status"] == 1),
+        :,
+    ]
+)
+
+not_same = len(
+    df.loc[
+        (
+            (df["ae_attendance_first_covid_status"] == 1)
+            & (df["ae_attendance_second_covid_status"] == 0)
+        )
+        | (
+            (df["ae_attendance_first_covid_status"] == 0)
+            & (df["ae_attendance_second_covid_status"] == 1)
+        ),
         :,
     ]
 )
 
 with open("output/same_count.json", "w") as fp:
-    json.dump({"same_count": same}, fp)
+    json.dump({"same_count": same, "not_same": not_same}, fp)
 
-plt.hist(df["between_1_2"].astype(str))
-plt.savefig("output/hist.jpeg")
+
+ae_time_diff_count = Counter(df["between_1_2"])
+ae_time_diff_count_stripped = {"7+": 0}
+for key, value in ae_time_diff_count.items():
+
+    if pd.isna(key):
+        pass
+    elif int(key) > 7:
+        ae_time_diff_count_stripped[key] = value
+
+    else:
+        ae_time_diff_count_stripped["7+"] += value
+
+with open("output/time_diff_count.json", "w") as fp:
+    json.dump(ae_time_diff_count_stripped, fp)
