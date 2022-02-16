@@ -553,7 +553,7 @@ study = StudyDefinition(
     ###
     # suspected primary care covid before ae
     ###
-    ae_attendance_first_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_attendance_first_suspected_covid_primary_care_status=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
             "ae_attendance_first_date - 14 days",
@@ -562,7 +562,7 @@ study = StudyDefinition(
         discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
-    ae_attendance_second_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_attendance_second_suspected_covid_primary_care_status=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
             "ae_attendance_second_date - 14 days",
@@ -571,7 +571,7 @@ study = StudyDefinition(
         discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
-    ae_attendance_third_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_attendance_third_suspected_covid_primary_care_status=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
             "ae_attendance_third_date - 14 days",
@@ -580,7 +580,7 @@ study = StudyDefinition(
         discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
-    ae_attendance_fourth_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_attendance_fourth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
             "ae_attendance_fourth_date - 14 days",
@@ -589,7 +589,7 @@ study = StudyDefinition(
         discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
-    ae_attendance_fifth_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_attendance_fifth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
             "ae_attendance_fifth_date - 14 days",
