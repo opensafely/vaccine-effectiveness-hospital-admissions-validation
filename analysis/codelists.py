@@ -13,7 +13,7 @@ covid_codes_ae = codelist_from_csv(
     column="code",
 )
 
-respiratory_codes = codelist_from_csv(
+respiratory_codes_ae = codelist_from_csv(
     "codelists/user-Louis-respiratory-related-ae.csv",
     system="snomed",
     column="code",

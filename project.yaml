@@ -17,20 +17,9 @@ actions:
       moderately_sensitive:
         count: output/ae_count.json
         hospital_count: output/hospital_admission_count.json
+        emergency_hospital_count: output/emergency_hospital_admission_count.json
         time_diff: output/time_diff_count.json
         same_count: output/same_count.json
-
-  generate_study_population_descriptives:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_descriptives
-    outputs:
-      highly_sensitive:
-        cohort: output/input_descriptives.csv
-
-  generate_study_population_alternative:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_alternative
-    outputs:
-      highly_sensitive:
-        cohort: output/input_alternative.csv
 
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition
@@ -38,33 +27,4 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
 
-  generate_results:
-    run: python:latest python analysis/generate_results.py
-    needs: [generate_study_population, generate_study_population_descriptives]
-    outputs:
-      moderately_sensitive:
-        num_patients: output/num_patients.json
-        ae_attendance_count_dict: output/num_ae_attendances.json
-        hosp_dict: output/emergency_hospitalisation.json
-        ae_dict: output/ae.json
-        any_ae_dict: output/ae_any.json
-        all_ae_dict: output/ae_all.json
-        discharge_csv: output/discharge_destination.csv
-        performance_dict: output/model_performance_updated.json
-        sensitivity_dict: output/sensitivity.json
-        model_csvs: output/model_*.csv
-        venn: output/venn.jpeg
-
-  generate_notebook:
-    run: jupyter:latest jupyter nbconvert /workspace/analysis/results.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
-    needs: [generate_study_population, generate_study_population_descriptives]
-    outputs:
-      moderately_sensitive:
-        notebook: output/results.html
-
-  generate_notebook_alternative:
-    run: jupyter:latest jupyter nbconvert /workspace/analysis/analysis.ipynb --execute --to html --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
-    needs: [generate_study_population_alternative]
-    outputs:
-      moderately_sensitive:
-        notebook: output/analysis.html
+  

@@ -30,6 +30,7 @@ ae_discharge_dict = {
 
 ae_discharge_list = [str(key) for (key, value) in ae_discharge_dict.items()]
 
+hosp_discharge_list = [str(306706006), str(1066331000000109), str(1066391000000105)]
 
 study = StudyDefinition(
     index_date=start_date,
@@ -90,6 +91,7 @@ study = StudyDefinition(
     ae_attendance_count=patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="number_of_matches_in_period",
+        discharged_to=hosp_discharge_list,
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
     hospital_admission_count=patients.admitted_to_hospital(
@@ -97,11 +99,31 @@ study = StudyDefinition(
         between=["index_date + 1 day", end_date],
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
+    emergency_hospital_admission_count = patients.admitted_to_hospital(
+        returning="number_of_matches_in_period",
+        between=["index_date + 1 day", end_date],
+        with_admission_method=[
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "2A",
+            "2B",
+            "2C",
+            "2D",
+            "28",
+        ],
+        with_patient_classification=["1"],
+        return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
+    ),
+
     ae_attendance_first_date=patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="date_arrived",
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         return_expectations={
             "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
             "rate": "exponential_increase",
@@ -114,6 +136,7 @@ study = StudyDefinition(
         ],
         returning="binary_flag",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         with_these_diagnoses=covid_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
@@ -121,6 +144,7 @@ study = StudyDefinition(
         between=["ae_attendance_first_date + 1 day", end_date],
         returning="date_arrived",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         date_format="YYYY-MM-DD",
         return_expectations={
             "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
@@ -134,6 +158,7 @@ study = StudyDefinition(
         ],
         returning="binary_flag",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         with_these_diagnoses=covid_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
@@ -141,6 +166,7 @@ study = StudyDefinition(
         between=["ae_attendance_second_date + 1 day", end_date],
         returning="date_arrived",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         date_format="YYYY-MM-DD",
         return_expectations={
             "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
@@ -154,6 +180,7 @@ study = StudyDefinition(
         ],
         returning="binary_flag",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         with_these_diagnoses=covid_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
@@ -161,6 +188,7 @@ study = StudyDefinition(
         between=["ae_attendance_third_date + 1 day", end_date],
         returning="date_arrived",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         date_format="YYYY-MM-DD",
         return_expectations={
             "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
@@ -174,6 +202,7 @@ study = StudyDefinition(
         ],
         returning="binary_flag",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         with_these_diagnoses=covid_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
@@ -181,6 +210,7 @@ study = StudyDefinition(
         between=["ae_attendance_fourth_date + 1 day", end_date],
         returning="date_arrived",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         date_format="YYYY-MM-DD",
         return_expectations={
             "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
@@ -194,6 +224,7 @@ study = StudyDefinition(
         ],
         returning="binary_flag",
         find_first_match_in_period=True,
+        discharged_to=hosp_discharge_list,
         with_these_diagnoses=covid_codes_ae,
         return_expectations={"incidence": 0.9},
     ),
