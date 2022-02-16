@@ -49,7 +49,7 @@ study = StudyDefinition(
         AND
         (NOT has_died)
         AND
-        (hospital_admission OR ae_attendance_any)
+        (hospital_admission OR ae_attendance)
         """,
         registered=patients.registered_as_of(
             "index_date",
@@ -511,7 +511,6 @@ study = StudyDefinition(
             "ae_attendance_first_date - 14 days",
             "ae_attendance_first_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_second_covid_primary_care_status=patients.with_these_clinical_events(
@@ -520,7 +519,6 @@ study = StudyDefinition(
             "ae_attendance_second_date - 14 days",
             "ae_attendance_second_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_third_covid_primary_care_status=patients.with_these_clinical_events(
@@ -529,7 +527,6 @@ study = StudyDefinition(
             "ae_attendance_third_date - 14 days",
             "ae_attendance_third_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_fourth_covid_primary_care_status=patients.with_these_clinical_events(
@@ -538,7 +535,6 @@ study = StudyDefinition(
             "ae_attendance_fourth_date - 14 days",
             "ae_attendance_fourth_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_fifth_covid_primary_care_status=patients.with_these_clinical_events(
@@ -547,7 +543,6 @@ study = StudyDefinition(
             "ae_attendance_fifth_date - 14 days",
             "ae_attendance_fifth_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ###
@@ -559,7 +554,6 @@ study = StudyDefinition(
             "ae_attendance_first_date - 14 days",
             "ae_attendance_first_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_second_suspected_covid_primary_care_status=patients.with_these_clinical_events(
@@ -568,7 +562,6 @@ study = StudyDefinition(
             "ae_attendance_second_date - 14 days",
             "ae_attendance_second_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_third_suspected_covid_primary_care_status=patients.with_these_clinical_events(
@@ -577,7 +570,6 @@ study = StudyDefinition(
             "ae_attendance_third_date - 14 days",
             "ae_attendance_third_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_fourth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
@@ -586,7 +578,6 @@ study = StudyDefinition(
             "ae_attendance_fourth_date - 14 days",
             "ae_attendance_fourth_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
     ae_attendance_fifth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
@@ -595,7 +586,6 @@ study = StudyDefinition(
             "ae_attendance_fifth_date - 14 days",
             "ae_attendance_fifth_date",
         ],
-        discharged_to=hosp_discharge_list,
         returning="binary_flag",
     ),
 

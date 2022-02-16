@@ -102,7 +102,6 @@ study = StudyDefinition(
     emergency_hospital_admission_count = patients.admitted_to_hospital(
         returning="number_of_matches_in_period",
         between=["index_date + 1 day", end_date],
-        discharged_to=hosp_discharge_list,
         with_admission_method=[
             "21",
             "22",
@@ -115,7 +114,7 @@ study = StudyDefinition(
             "2D",
             "28",
         ],
-        with_patient_classification=["1"]
+        with_patient_classification=["1"],
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
 
