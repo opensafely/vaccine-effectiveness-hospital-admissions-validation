@@ -21,18 +21,6 @@ actions:
         time_diff: output/time_diff_count.json
         same_count: output/same_count.json
 
-  generate_study_population_descriptives:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_descriptives
-    outputs:
-      highly_sensitive:
-        cohort: output/input_descriptives.csv
-
-  generate_study_population_alternative:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_alternative
-    outputs:
-      highly_sensitive:
-        cohort: output/input_alternative.csv
-
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition
     outputs:
