@@ -1,7 +1,7 @@
 version: "3.0"
 
 expectations:
-  population_size: 10000
+  population_size: 1000
 
 actions:
   generate_study_population_ae:
@@ -34,6 +34,13 @@ actions:
       highly_sensitive:
         ae_events: output/ae_events.feather
         hospital_events: output/hospital_events.feather
+
+  generate_results:
+    run: python:latest python analysis/generate_results.py
+    needs: [generate_events]
+    outputs:
+      moderately_sensitive:
+        results: output/results_*.csv
 
 
   
