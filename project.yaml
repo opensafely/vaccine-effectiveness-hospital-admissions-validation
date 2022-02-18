@@ -27,4 +27,13 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
 
+  generate_events:
+    run: python:latest python analysis/events.py
+    needs: [generate_study_population]
+    outputs:
+      highly_sensitive:
+        ae_events: output/ae_events.feather
+        hospital_events: output/hospital_events.feather
+
+
   
