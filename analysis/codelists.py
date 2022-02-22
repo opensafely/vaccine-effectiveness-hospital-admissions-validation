@@ -19,6 +19,8 @@ respiratory_codes_ae = codelist_from_csv(
     column="code",
 )
 
+resp_including_covid_ae = combine_codelists(covid_codes_ae, respiratory_codes_ae)
+
 
 covid_primary_care_positive_test = codelist_from_csv(
     "codelists/opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv",
