@@ -45,7 +45,7 @@ def get_event(row, ae_or_hosp):
                 ae_event_data.append(new_row)
         
     elif ae_or_hosp == "hosp":
-        dates = row["emergency_covid_hospital_dates"]
+        dates = row["emergency_primary_covid_hospital_dates"]
     
         for i, date in enumerate(dates):
             if pd.notnull(date):

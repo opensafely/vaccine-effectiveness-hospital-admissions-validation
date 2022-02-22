@@ -18,9 +18,6 @@ actions:
         count: output/ae_count.json
         hospital_count: output/hospital_admission_count.json
         emergency_hospital_count: output/emergency_hospital_admission_count.json
-        time_diff: output/time_diff_count.json
-        same_count: output/same_count.json
-
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition
     outputs:
