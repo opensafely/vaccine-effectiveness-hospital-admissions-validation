@@ -46,7 +46,7 @@ for i in range(ae_events.shape[0]):
 neg = len(hospital_events[hospital_events["ae_attendance_in_range"] == 0])
 
 # all
-ae_events["predicted_inclusive"] = np.where((ae_events["patient_id"].notnull()), 1, 0)
+ae_events["predicted_inclusive"] = 1
 
 ae_events["predicted_resp"] = np.where((ae_events["resp_status"] == 1), 1, 0)
 
