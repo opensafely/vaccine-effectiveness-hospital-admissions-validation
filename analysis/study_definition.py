@@ -92,6 +92,22 @@ study = StudyDefinition(
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.4},
     ),
+    ae_attendance_hosp_discharge=patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="binary_flag",
+        find_last_match_in_period=True,
+        discharged_to=hosp_discharge_list,
+        return_expectations={"incidence": 0.4},
+    ),
+
+    ae_attendance_hosp_discharge_date=patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        discharged_to=hosp_discharge_list,
+        return_expectations={"incidence": 0.4},
+    ),
     ####
     # ae count
     ####
@@ -101,47 +117,9 @@ study = StudyDefinition(
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
     ####
-    # First 5 ae attendance dates
+    # hospital admission
     ####
-    ae_attendance_first_date=patients.attended_emergency_care(
-        between=["index_date", end_date],
-        returning="date_arrived",
-        date_format="YYYY-MM-DD",
-        discharged_to=hosp_discharge_list,
-        find_first_match_in_period=True,
-    ),
-    ae_attendance_second_date=patients.attended_emergency_care(
-        between=["ae_attendance_first_date + 1 day", end_date],
-        returning="date_arrived",
-        date_format="YYYY-MM-DD",
-        discharged_to=hosp_discharge_list,
-        find_first_match_in_period=True,
-    ),
-    ae_attendance_third_date=patients.attended_emergency_care(
-        between=["ae_attendance_second_date + 1 day", end_date],
-        returning="date_arrived",
-        date_format="YYYY-MM-DD",
-        discharged_to=hosp_discharge_list,
-        find_first_match_in_period=True,
-    ),
-    ae_attendance_fourth_date=patients.attended_emergency_care(
-        between=["ae_attendance_third_date + 1 day", end_date],
-        returning="date_arrived",
-        date_format="YYYY-MM-DD",
-        discharged_to=hosp_discharge_list,
-        find_first_match_in_period=True,
-    ),
-    ae_attendance_fifth_date=patients.attended_emergency_care(
-        between=["ae_attendance_fourth_date + 1 day", end_date],
-        returning="date_arrived",
-        date_format="YYYY-MM-DD",
-        discharged_to=hosp_discharge_list,
-        find_first_match_in_period=True,
-    ),
-    ####
-    # First 5 emergency covid hospital admissions dates
-    ####
-    emergency_covid_hospital_admission_first_date=patients.admitted_to_hospital(
+    emergency_covid_hospital_admission_date=patients.admitted_to_hospital(
         returning="date_admitted",
         with_these_diagnoses=covid_codes,
         with_admission_method=[
@@ -159,445 +137,69 @@ study = StudyDefinition(
         with_patient_classification=["1"],
         between=["index_date + 1 day", end_date],
         date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
+        find_last_match_in_period=True,
         return_expectations={
             "incidence": 0.3,
         },
     ),
-    emergency_covid_hospital_admission_second_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=["emergency_covid_hospital_admission_first_date + 1 day", end_date],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_covid_hospital_admission_third_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=["emergency_covid_hospital_admission_second_date + 1 day", end_date],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_covid_hospital_admission_fourth_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=["emergency_covid_hospital_admission_third_date + 1 day", end_date],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_covid_hospital_admission_fifth_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=["emergency_covid_hospital_admission_fourth_date + 1 day", end_date],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
+    
     ####
-    # First 5 emergency primary covid hospital admissions dates
+    # satisfying ae before emergency covid hospital admission
     ####
-    emergency_primary_covid_hospital_admission_first_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_primary_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=["index_date + 1 day", end_date],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_primary_covid_hospital_admission_second_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_primary_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
+    ae_before_with_hospital_discharge_date=patients.attended_emergency_care(
         between=[
-            "emergency_primary_covid_hospital_admission_first_date + 1 day",
-            end_date,
+            "emergency_covid_hospital_admission_date - 14 days",
+            "emergency_covid_hospital_admission_date",
         ],
+        returning="date_arrived",
         date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
+        discharged_to=hosp_discharge_list,
+        find_last_match_in_period=True,
     ),
-    emergency_primary_covid_hospital_admission_third_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
+    ae_before_with_hospital_discharge_covid=patients.attended_emergency_care(
         between=[
-            "emergency_primary_covid_hospital_admission_second_date + 1 day",
-            end_date,
-        ],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_primary_covid_hospital_admission_fourth_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=[
-            "emergency_primary_covid_hospital_admission_third_date + 1 day",
-            end_date,
-        ],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    emergency_primary_covid_hospital_admission_fifth_date=patients.admitted_to_hospital(
-        returning="date_admitted",
-        with_these_diagnoses=covid_codes,
-        with_admission_method=[
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "2A",
-            "2B",
-            "2C",
-            "2D",
-            "28",
-        ],
-        with_patient_classification=["1"],
-        between=[
-            "emergency_primary_covid_hospital_admission_fourth_date + 1 day",
-            end_date,
-        ],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={
-            "incidence": 0.3,
-        },
-    ),
-    ####
-    # Covid code ae
-    ####
-    ae_attendance_first_covid_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_first_date",
-            "ae_attendance_first_date",
+            "emergency_covid_hospital_admission_date - 14 days",
+            "emergency_covid_hospital_admission_date",
         ],
         returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
+        date_format="YYYY-MM-DD",
         with_these_diagnoses=covid_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_second_covid_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_second_date",
-            "ae_attendance_second_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
-        with_these_diagnoses=covid_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_third_covid_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_third_date",
-            "ae_attendance_third_date",
-        ],
-        returning="binary_flag",
         find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=covid_codes_ae,
-        return_expectations={"incidence": 0.9},
     ),
-    ae_attendance_fourth_covid_status=patients.attended_emergency_care(
+    ae_before_with_hospital_discharge_resp=patients.attended_emergency_care(
         between=[
-            "ae_attendance_fourth_date",
-            "ae_attendance_fourth_date",
+            "emergency_covid_hospital_admission_date - 14 days",
+            "emergency_covid_hospital_admission_date",
         ],
         returning="binary_flag",
+        date_format="YYYY-MM-DD",
+        with_these_diagnoses=resp_including_covid_ae,
+        discharged_to=hosp_discharge_list,
         find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=covid_codes_ae,
-        return_expectations={"incidence": 0.9},
     ),
-    ae_attendance_fifth_covid_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_fifth_date",
-            "ae_attendance_fifth_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=covid_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ####
-    # respiratory code ae
-    ####
-    ae_attendance_first_respiratory_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_first_date",
-            "ae_attendance_first_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=respiratory_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_second_respiratory_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_second_date",
-            "ae_attendance_second_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=respiratory_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_third_respiratory_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_third_date",
-            "ae_attendance_third_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=respiratory_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_fourth_respiratory_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_fourth_date",
-            "ae_attendance_fourth_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=respiratory_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ae_attendance_fifth_respiratory_status=patients.attended_emergency_care(
-        between=[
-            "ae_attendance_fifth_date",
-            "ae_attendance_fifth_date",
-        ],
-        returning="binary_flag",
-        find_last_match_in_period=True,
-        discharged_to=hosp_discharge_list,
-        with_these_diagnoses=respiratory_codes_ae,
-        return_expectations={"incidence": 0.9},
-    ),
-    ###
-    # primary care covid before ae
-    ###
-    ae_attendance_first_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_codes,
-        between=[
-            "ae_attendance_first_date - 14 days",
-            "ae_attendance_first_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_second_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_codes,
-        between=[
-            "ae_attendance_second_date - 14 days",
-            "ae_attendance_second_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_third_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_codes,
-        between=[
-            "ae_attendance_third_date - 14 days",
-            "ae_attendance_third_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_fourth_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_codes,
-        between=[
-            "ae_attendance_fourth_date - 14 days",
-            "ae_attendance_fourth_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_fifth_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_codes,
-        between=[
-            "ae_attendance_fifth_date - 14 days",
-            "ae_attendance_fifth_date",
-        ],
-        returning="binary_flag",
-    ),
-    ###
-    # suspected primary care covid before ae
-    ###
-    ae_attendance_first_suspected_covid_primary_care_status=patients.with_these_clinical_events(
+    ae_before_with_hospital_discharge_prim_care_suspected=patients.with_these_clinical_events(
         codelist=covid_primary_care_suspected_codes,
         between=[
-            "ae_attendance_first_date - 14 days",
-            "ae_attendance_first_date",
+            "ae_before_with_hospital_discharge_date - 14 days",
+            "ae_before_with_hospital_discharge_date",
         ],
         returning="binary_flag",
     ),
-    ae_attendance_second_suspected_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
+    ae_before_with_hospital_discharge_prim_care_probable=patients.with_these_clinical_events(
+        codelist=covid_primary_care_codes,
         between=[
-            "ae_attendance_second_date - 14 days",
-            "ae_attendance_second_date",
+            "ae_before_with_hospital_discharge_date - 14 days",
+            "ae_before_with_hospital_discharge_date",
         ],
         returning="binary_flag",
     ),
-    ae_attendance_third_suspected_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
-        between=[
-            "ae_attendance_third_date - 14 days",
-            "ae_attendance_third_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_fourth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
-        between=[
-            "ae_attendance_fourth_date - 14 days",
-            "ae_attendance_fourth_date",
-        ],
-        returning="binary_flag",
-    ),
-    ae_attendance_fifth_suspected_covid_primary_care_status=patients.with_these_clinical_events(
-        codelist=covid_primary_care_suspected_codes,
-        between=[
-            "ae_attendance_fifth_date - 14 days",
-            "ae_attendance_fifth_date",
-        ],
-        returning="binary_flag",
-    ),
-
-    ###
-    # Positive test before ae
-    ###
-    positive_covid_test_before_ae_attendance_first=patients.with_test_result_in_sgss(
+    ae_before_with_hospital_discharge_positive_covid_test=patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
         between=[
-            "ae_attendance_first_date - 28 days",
-            "ae_attendance_first_date +7 days",
+            "ae_before_with_hospital_discharge_date - 28 days",
+            "ae_before_with_hospital_discharge_date +7 days",
         ],
         returning="binary_flag",
         return_expectations={
@@ -606,59 +208,115 @@ study = StudyDefinition(
         },
     ),
 
-    positive_covid_test_before_ae_attendance_second=patients.with_test_result_in_sgss(
-        pathogen="SARS-CoV-2",
-        test_result="positive",
-        between=[
-            "ae_attendance_second_date - 28 days",
-            "ae_attendance_second_date +7 days",
-        ],
+    ####
+    # satisfying ae attendances without subsequent hospitalisation
+    ####
+    # ae_attendance_date
+    emergency_covid_hospital_admission_after_ae_hosp_discharge=patients.admitted_to_hospital(
         returning="binary_flag",
+        with_these_diagnoses=covid_codes,
+        with_admission_method=[
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "2A",
+            "2B",
+            "2C",
+            "2D",
+            "28",
+        ],
+        with_patient_classification=["1"],
+        between=[
+            "ae_attendance_hosp_discharge_date",
+            "ae_attendance_hosp_discharge_date + 14 days"
+        ],
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
         return_expectations={
-            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
-            "rate": "exponential_increase",
+            "incidence": 0.3,
         },
     ),
-
-    positive_covid_test_before_ae_attendance_third=patients.with_test_result_in_sgss(
-        pathogen="SARS-CoV-2",
-        test_result="positive",
-        between=[
-            "ae_attendance_third_date - 28 days",
-            "ae_attendance_third_date +7 days",
-        ],
-        returning="binary_flag",
-        return_expectations={
-            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
-            "rate": "exponential_increase",
-        },
+    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_prim_care=patients.satisfying(
+        """
+        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
+        covid_primary_care_before_ae=1
+        """,
+        covid_primary_care_before_ae=patients.with_these_clinical_events(
+            codelist=covid_primary_care_codes,
+            between=[
+                "ae_attendance_hosp_discharge_date - 14 days",
+                "ae_attendance_hosp_discharge_date"
+            ],
+            returning="binary_flag",
+        ),
     ),
-
-    positive_covid_test_before_ae_attendance_fourth=patients.with_test_result_in_sgss(
-        pathogen="SARS-CoV-2",
-        test_result="positive",
-        between=[
-            "ae_attendance_fourth_date - 28 days",
-            "ae_attendance_fourth_date +7 days",
-        ],
-        returning="binary_flag",
-        return_expectations={
-            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
-            "rate": "exponential_increase",
-        },
+    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_suspected_prim_care=patients.satisfying(
+        """
+        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
+        suspected_covid_primary_care_before_ae=1
+        """,
+        suspected_covid_primary_care_before_ae=patients.with_these_clinical_events(
+            codelist=covid_primary_care_suspected_codes,
+            between=[
+                "ae_attendance_hosp_discharge_date - 14 days",
+                "ae_attendance_hosp_discharge_date"
+            ],
+            returning="binary_flag",
+        ),
     ),
-
-    positive_covid_test_before_ae_attendance_fifth=patients.with_test_result_in_sgss(
-        pathogen="SARS-CoV-2",
-        test_result="positive",
-        between=[
-            "ae_attendance_fifth_date - 28 days",
-            "ae_attendance_fifth_date +7 days",
-        ],
-        returning="binary_flag",
-        return_expectations={
-            "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
-            "rate": "exponential_increase",
-        },
-    )
+    emergency_covid_hospital_admission_after_ae_hosp_discharge_pos_test=patients.satisfying(
+        """
+        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
+        pos_test=1
+        """,
+        pos_test=patients.with_test_result_in_sgss(
+            pathogen="SARS-CoV-2",
+            test_result="positive",
+            between=[
+                "ae_attendance_hosp_discharge_date - 28 days",
+                "ae_attendance_hosp_discharge_date + 7 days"
+            ],
+            returning="binary_flag",
+            return_expectations={
+                "date": {"earliest": "2021-01-01", "latest": "2021-02-01"},
+                "rate": "exponential_increase",
+            },
+        ),
+    ),
+    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_code=patients.satisfying(
+        """
+        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
+        ae_cov=1
+        """,
+        ae_cov=patients.attended_emergency_care(
+            between=[
+                "ae_attendance_hosp_discharge_date",
+                "ae_attendance_hosp_discharge_date"
+            ],
+            returning="binary_flag",
+            date_format="YYYY-MM-DD",
+            with_these_diagnoses=covid_codes_ae,
+            discharged_to=hosp_discharge_list,
+            find_last_match_in_period=True,
+        ),
+    ),
+    emergency_covid_hospital_admission_after_ae_hosp_discharge_resp_code=patients.satisfying(
+        """
+        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
+        ae_resp=1
+        """,
+        ae_resp=patients.attended_emergency_care(
+            between=[
+                "ae_attendance_hosp_discharge_date",
+                "ae_attendance_hosp_discharge_date"
+            ],
+            returning="binary_flag",
+            date_format="YYYY-MM-DD",
+            with_these_diagnoses=resp_including_covid_ae,
+            discharged_to=hosp_discharge_list,
+            find_last_match_in_period=True,
+        ),
+    ),
 )

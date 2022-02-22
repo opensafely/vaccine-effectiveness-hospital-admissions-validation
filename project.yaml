@@ -4,40 +4,17 @@ expectations:
   population_size: 1000
 
 actions:
-  generate_study_population_ae:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_ae
-    outputs:
-      highly_sensitive:
-        cohort: output/input_ae.csv
-
-  generate_ae_count:
-    run: python:latest python analysis/ae_count.py
-    needs: [generate_study_population_ae]
-    outputs:
-      moderately_sensitive:
-        count: output/ae_count.json
-        hospital_count: output/hospital_admission_count.json
-        emergency_hospital_count: output/emergency_hospital_admission_count.json
+ 
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition
     outputs:
       highly_sensitive:
         cohort: output/input.csv
 
-  generate_events:
-    run: python:latest python analysis/events.py
+  generate_results:
+    run: jupyter:latest jupyter nbconvert /workspace/analysis/generate_results.ipynb --execute --to html --template basic --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
     needs: [generate_study_population]
     outputs:
-      highly_sensitive:
-        ae_events: output/ae_events.feather
-        hospital_events: output/hospital_events.feather
-
-  generate_results:
-    run: python:latest python analysis/generate_results.py
-    needs: [generate_events]
-    outputs:
       moderately_sensitive:
-        results: output/results_*.csv
-
-
+        notebook: output/generate_results.html
   
