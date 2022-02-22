@@ -38,7 +38,7 @@ for key, value in hospital_count.items():
 with open("output/hospital_admission_count.json", "w") as fp:
     json.dump(hospital_count_stripped, fp)
 
-emergency_hospital_count = Counter(df["emergency_hospital_admission_count"])
+emergency_hospital_count = Counter(df["emergency_primary_hospital_admission_count"])
 emergency_hospital_count_stripped = {"5+": 0}
 for key, value in emergency_hospital_count.items():
     if int(key) < 5:
