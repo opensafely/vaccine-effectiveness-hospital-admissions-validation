@@ -238,12 +238,8 @@ study = StudyDefinition(
             "incidence": 0.3,
         },
     ),
-    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_prim_care=patients.satisfying(
-        """
-        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
-        covid_primary_care_before_ae=1
-        """,
-        covid_primary_care_before_ae=patients.with_these_clinical_events(
+
+    covid_primary_care_before_ae=patients.with_these_clinical_events(
             codelist=covid_primary_care_codes,
             between=[
                 "ae_attendance_hosp_discharge_date - 14 days",
@@ -251,13 +247,8 @@ study = StudyDefinition(
             ],
             returning="binary_flag",
         ),
-    ),
-    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_suspected_prim_care=patients.satisfying(
-        """
-        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
-        suspected_covid_primary_care_before_ae=1
-        """,
-        suspected_covid_primary_care_before_ae=patients.with_these_clinical_events(
+
+    suspected_covid_primary_care_before_ae=patients.with_these_clinical_events(
             codelist=covid_primary_care_suspected_codes,
             between=[
                 "ae_attendance_hosp_discharge_date - 14 days",
@@ -265,13 +256,8 @@ study = StudyDefinition(
             ],
             returning="binary_flag",
         ),
-    ),
-    emergency_covid_hospital_admission_after_ae_hosp_discharge_pos_test=patients.satisfying(
-        """
-        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
-        pos_test=1
-        """,
-        pos_test=patients.with_test_result_in_sgss(
+
+    pos_test=patients.with_test_result_in_sgss(
             pathogen="SARS-CoV-2",
             test_result="positive",
             between=[
@@ -284,13 +270,8 @@ study = StudyDefinition(
                 "rate": "exponential_increase",
             },
         ),
-    ),
-    emergency_covid_hospital_admission_after_ae_hosp_discharge_cov_code=patients.satisfying(
-        """
-        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
-        ae_cov=1
-        """,
-        ae_cov=patients.attended_emergency_care(
+   
+    ae_cov=patients.attended_emergency_care(
             between=[
                 "ae_attendance_hosp_discharge_date",
                 "ae_attendance_hosp_discharge_date"
@@ -301,13 +282,8 @@ study = StudyDefinition(
             discharged_to=hosp_discharge_list,
             find_last_match_in_period=True,
         ),
-    ),
-    emergency_covid_hospital_admission_after_ae_hosp_discharge_resp_code=patients.satisfying(
-        """
-        emergency_covid_hospital_admission_after_ae_hosp_discharge = 1 AND 
-        ae_resp=1
-        """,
-        ae_resp=patients.attended_emergency_care(
+    
+    ae_resp=patients.attended_emergency_care(
             between=[
                 "ae_attendance_hosp_discharge_date",
                 "ae_attendance_hosp_discharge_date"
@@ -317,6 +293,5 @@ study = StudyDefinition(
             with_these_diagnoses=resp_including_covid_ae,
             discharged_to=hosp_discharge_list,
             find_last_match_in_period=True,
-        ),
-    ),
+        )
 )
