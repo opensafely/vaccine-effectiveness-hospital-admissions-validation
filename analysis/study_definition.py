@@ -92,6 +92,15 @@ study = StudyDefinition(
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.4},
     ),
+
+    ae_attendance_date=patients.attended_emergency_care(
+        between=["index_date", end_date],
+        returning="date_arrived",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={"incidence": 0.4},
+    ),
+
     ae_attendance_hosp_discharge=patients.attended_emergency_care(
         between=["index_date", end_date],
         returning="binary_flag",
@@ -144,6 +153,16 @@ study = StudyDefinition(
     ####
     # satisfying ae before emergency covid hospital admission
     ####
+    ae_before_date = patients.attended_emergency_care(
+        between=[
+            "emergency_covid_hospital_admission_date - 14 days",
+            "emergency_covid_hospital_admission_date",
+        ],
+        returning="date_arrived",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+    ),
+
     ae_before_with_hospital_discharge_date=patients.attended_emergency_care(
         between=[
             "emergency_covid_hospital_admission_date - 14 days",
@@ -222,6 +241,34 @@ study = StudyDefinition(
     # satisfying ae attendances without subsequent hospitalisation
     ####
     # ae_attendance_date
+
+    emergency_covid_hospital_admission_after_ae=patients.admitted_to_hospital(
+        returning="binary_flag",
+        with_these_diagnoses=covid_codes,
+        with_admission_method=[
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "2A",
+            "2B",
+            "2C",
+            "2D",
+            "28",
+        ],
+        with_patient_classification=["1"],
+        between=[
+            "ae_attendance_date",
+            "ae_attendance_date + 14 days",
+        ],
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+            "incidence": 0.3,
+        },
+    ),
+
     emergency_covid_hospital_admission_after_ae_hosp_discharge=patients.admitted_to_hospital(
         returning="binary_flag",
         with_these_diagnoses=covid_codes,
