@@ -129,7 +129,7 @@ study = StudyDefinition(
     ####
     emergency_covid_hospital_admission_date=patients.admitted_to_hospital(
         returning="date_admitted",
-        with_these_diagnoses=covid_codes,
+        with_these_primary_diagnoses=covid_codes,
         with_admission_method=[
             "21",
             "22",
@@ -306,7 +306,7 @@ study = StudyDefinition(
 
     emergency_covid_hospital_admission_after_ae=patients.admitted_to_hospital(
         returning="binary_flag",
-        with_these_diagnoses=covid_codes,
+        with_these_primary_diagnoses=covid_codes,
         with_admission_method=[
             "21",
             "22",
@@ -333,7 +333,7 @@ study = StudyDefinition(
    
     emergency_covid_hospital_admission_after_ae_hosp_discharge=patients.admitted_to_hospital(
         returning="binary_flag",
-        with_these_diagnoses=covid_codes,
+        with_these_primary_diagnoses=covid_codes,
         with_admission_method=[
             "21",
             "22",
