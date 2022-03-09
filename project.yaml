@@ -23,7 +23,7 @@ actions:
     outputs:
       moderately_sensitive:
         notebook: output/generate_results.html
-        tables: output/summary_table.csv
+        tables: output/summary_tabl*.csv
         id_tables: output/identification_table_*.csv
         cm: output/cm_*.jpeg
   
