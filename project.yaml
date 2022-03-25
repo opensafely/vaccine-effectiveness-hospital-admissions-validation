@@ -6,24 +6,36 @@ expectations:
 actions:
  
   generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition
+    run: cohortextractor:latest generate_cohort --study-definition study_definition --index-date-range  "2021-06-01 to 2021-06-01 by month" --output-format csv.gz
     outputs:
       highly_sensitive:
-        cohort: output/input.csv
+        cohort: output/input_*.csv.gz
 
   generate_study_population_prim_cov:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_prim_cov
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_prim_cov --index-date-range  "2021-06-01 to 2021-06-01 by month" --output-format csv.gz
     outputs:
       highly_sensitive:
-        cohort: output/input_prim_cov.csv
+        cohort: output/input_prim_cov_*.csv.gz
+
+  generate_study_population_2:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition --index-date-range  "2021-10-01 to 2021-10-01 by month" --output-format csv.gz
+    outputs:
+      highly_sensitive:
+        cohort: output/input*.csv.gz
+
+  generate_study_population_prim_cov_2:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_prim_cov --index-date-range  "2021-10-01 to 2021-10-01 by month" --output-format csv.gz
+    outputs:
+      highly_sensitive:
+        cohort: output/input_prim_cov*.csv.gz
 
   generate_results:
     run: jupyter:latest jupyter nbconvert /workspace/analysis/generate_results.ipynb --execute --to html --template basic --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
-    needs: [generate_study_population, generate_study_population_prim_cov]
+    needs: [generate_study_population, generate_study_population_2, generate_study_population_prim_cov, generate_study_population_prim_cov_2]
     outputs:
       moderately_sensitive:
         notebook: output/generate_results.html
         tables: output/summary_tabl*.csv
         id_tables: output/identification_table_*.csv
         cm: output/cm_*.jpeg
-  
+
