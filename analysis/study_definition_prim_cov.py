@@ -4,7 +4,6 @@ from cohortextractor import StudyDefinition, patients, codelist, codelist_from_c
 from codelists import *
 
 start_date = "2021-06-01"
-end_date = "2021-10-01"
 
 ae_discharge_dict = {
     1066341000000100: "Ambulatory Emergency Care",
@@ -35,7 +34,7 @@ ae_discharge_list = [str(key) for (key, value) in ae_discharge_dict.items()]
 study = StudyDefinition(
     index_date=start_date,
     default_expectations={
-        "date": {"earliest": start_date, "latest": end_date},
+        "date": {"earliest": start_date, "latest": "index_date + 3 months"},
         "rate": "uniform",
         "incidence": 0.5,
     },
@@ -79,7 +78,7 @@ study = StudyDefinition(
     # index date + 1 day to give time for hospital admission to appear
     hospital_admission=patients.admitted_to_hospital(
         returning="binary_flag",
-        between=["index_date + 1 day", end_date],
+        between=["index_date + 1 day", "index_date + 3 months"],
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={
@@ -87,14 +86,14 @@ study = StudyDefinition(
         },
     ),
     ae_attendance=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "index_date + 3 months"],
         returning="binary_flag",
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.4},
     ),
 
     ae_attendance_date=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "index_date + 3 months"],
         returning="date_arrived",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -102,14 +101,14 @@ study = StudyDefinition(
     ),
 
     ae_attendance_hosp_discharge=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "index_date + 3 months"],
         returning="binary_flag",
         find_last_match_in_period=True,
         discharged_to=hosp_discharge_list,
         return_expectations={"incidence": 0.4},
     ),
     ae_attendance_hosp_discharge_date=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "index_date + 3 months"],
         returning="date_arrived",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
@@ -120,7 +119,7 @@ study = StudyDefinition(
     # ae count
     ####
     ae_attendance_count=patients.attended_emergency_care(
-        between=["index_date", end_date],
+        between=["index_date", "index_date + 3 months"],
         returning="number_of_matches_in_period",
         return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}},
     ),
@@ -143,7 +142,7 @@ study = StudyDefinition(
             "28",
         ],
         with_patient_classification=["1"],
-        between=["index_date + 1 day", end_date],
+        between=["index_date + 1 day", "index_date + 3 months"],
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={

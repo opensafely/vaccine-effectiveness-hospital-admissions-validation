@@ -145,7 +145,7 @@ study = StudyDefinition(
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={
-            "incidence": 0.3,
+            "incidence": 0.8,
         },
     ),
     ####

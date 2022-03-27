@@ -29,13 +29,23 @@ actions:
       highly_sensitive:
         cohort: output/input_prim_cov*.csv.gz
 
-  generate_results:
-    run: jupyter:latest jupyter nbconvert /workspace/analysis/generate_results.ipynb --execute --to html --template basic --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
+  generate_results_jun:
+    run: jupyter:latest jupyter nbconvert /workspace/analysis/generate_results_jun.ipynb --execute --to html --template basic --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
     needs: [generate_study_population, generate_study_population_2, generate_study_population_prim_cov, generate_study_population_prim_cov_2]
     outputs:
       moderately_sensitive:
-        notebook: output/generate_results.html
-        tables: output/summary_tabl*.csv
-        id_tables: output/identification_table_*.csv
-        cm: output/cm_*.jpeg
+        notebook: output/jun/generate_results.html
+        tables: output/jun/summary_tabl*.csv
+        id_tables: output/jun/identification_table_*.csv
+        cm: output/jun/cm_*.jpeg
+
+  generate_results_oct:
+    run: jupyter:latest jupyter nbconvert /workspace/analysis/generate_results_oct.ipynb --execute --to html --template basic --output-dir=/workspace/output --ExecutePreprocessor.timeout=86400 --no-input
+    needs: [generate_study_population, generate_study_population_2, generate_study_population_prim_cov, generate_study_population_prim_cov_2]
+    outputs:
+      moderately_sensitive:
+        notebook: output/oct/generate_results.html
+        tables: output/oct/summary_tabl*.csv
+        id_tables: output/oct/identification_table_*.csv
+        cm: output/oct/cm_*.jpeg
 
