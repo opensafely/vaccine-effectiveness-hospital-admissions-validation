@@ -27,7 +27,7 @@ ae_discharge_dict = {
     "missing": "missing",
 }
 
-hosp_discharge_list = [str(306706006), str(1066331000000109), str(1066391000000105)]
+hosp_discharge_list = [str(306706006), str(1066331000000109), str(1066391000000105), str(1066361000000104)]
 
 ae_discharge_list = [str(key) for (key, value) in ae_discharge_dict.items()]
 
@@ -477,5 +477,18 @@ study = StudyDefinition(
         with_these_diagnoses=respiratory_codes_ae,
         discharged_to=hosp_discharge_list,
         find_last_match_in_period=True,
+    ),
+    discharge_destination = patients.attended_emergency_care(
+        between=[
+            "ae_attendance_date",
+            "ae_attendance_date",
+        ],
+        returning="discharge_destination",
+        date_format="YYYY-MM-DD",
+        find_last_match_in_period=True,
+        return_expectations={
+                "rate": "universal",
+                "category": {"ratios": {"001": 0.49, "002": 0.51}},
+            }
     ),
 )
